@@ -1,0 +1,62 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: var(--brand-background);
+  --color-foreground: var(--brand-navy);
+  --color-primary: var(--brand-blue);
+  --color-primary-foreground: var(--brand-white);
+  --color-secondary: var(--brand-mint);
+  --color-secondary-foreground: var(--brand-navy);
+  --color-muted: #EDF2F9;
+  --color-muted-foreground: var(--brand-text-muted);
+  --color-card: var(--brand-white);
+  --color-border: var(--brand-border);
+  --color-destructive: #B42332;
+  --color-ring: var(--brand-blue);
+  --shadow-elevated-lg: var(--brand-shadow);
+  --animate-accordion-down: accordion-down 220ms ease-out;
+  --animate-accordion-up: accordion-up 220ms ease-out;
+}
+@keyframes accordion-down { from { height: 0; } to { height: var(--radix-accordion-content-height); } }
+@keyframes accordion-up { from { height: var(--radix-accordion-content-height); } to { height: 0; } }
+
+.elmam-pricing { margin-block: 40px; }
+.elmam-pricing h2,.elmam-pricing h3,.elmam-pricing p { margin: 0; }
+.elmam-pricing ul { list-style: none; margin: 0; padding: 0; }
+.elmam-pricing-card { border: 1px solid var(--brand-border); background: radial-gradient(ellipse at 0 0,#7a5cff09,transparent 55%),var(--brand-white); }
+.elmam-pricing-actions form { display: grid; gap: 12px; }
+.elmam-pricing-actions [role="alert"] { color: #B42332; }
+.elmam-pricing-actions [role="status"] { color: var(--brand-text-muted); line-height: 1.6; }
+.elmam-fancy-button { box-shadow: var(--brand-glow),inset 0 1px 0 #ffffff40,inset 0 -1px 1px #0b1f4b33; }
+
+.modal.liquid-login-modal { width: min(600px,calc(100vw - 32px)); padding: 0; background: var(--brand-navy); color: white; border: 1px solid #8fa9d044; overflow-x: hidden; }
+.liquid-login-modal .modal-head { padding: 24px; margin: 0; border-color: #ffffff26; }
+.liquid-login-modal .modal-head h2,.liquid-login-modal .modal-head .icon-btn { color: white; }
+.elmam-liquid-login { position: relative; isolation: isolate; overflow: hidden; min-height: 420px; background: var(--brand-navy); color: white; border-radius: 0 0 32px 32px; }
+.liquid-filter { position: absolute; pointer-events: none; }
+.liquid-stage { position: absolute; inset: -32px; z-index: -1; opacity: .4; pointer-events: none; }
+.liquid-blob { position: absolute; background: radial-gradient(circle at 25% 20%,#d0f8ee,var(--brand-turquoise) 50%,var(--brand-blue)); border-radius: 50%; box-shadow: inset -12px -12px 24px #0b1f4b88,inset 8px 8px 24px #ffffff44; filter: blur(14px); animation: elmam-liquid-float 22s ease-in-out infinite alternate; translate: var(--liquid-x,0px) var(--liquid-y,0px); transition: translate 240ms ease-out; }
+.liquid-blob:nth-child(2n) { background: radial-gradient(circle at 25% 20%,#cad8ff,var(--brand-blue) 55%,var(--brand-purple)); }
+.liquid-content { position: relative; padding: 32px; background: linear-gradient(135deg,#0b1f4b88,#0b1f4bdd); }
+.liquid-identity { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+.liquid-identity > span { color: var(--brand-on-dark); font-size: 14px; }
+.liquid-logo { padding: 12px 20px; background: white; border-radius: 999px; box-shadow: 0 12px 32px #0b1f4b22; }
+.liquid-logo img { width: 80px; height: auto; display: block; }
+.liquid-content .muted,.liquid-content .field { color: var(--brand-on-dark); }
+.liquid-content form { display: grid; gap: 20px; margin-top: 24px; }
+.liquid-content .field { margin: 0; }
+.liquid-content .field input { color: white; background: #0b1f4b88; border-color: #93abd1; min-height: 48px; }
+.liquid-content .field input::placeholder { color: #b2c5e6; }
+.liquid-content .field input:focus { border-color: var(--brand-turquoise); box-shadow: 0 0 0 3px #00c2a826; }
+.liquid-content .text-btn { color: white; border-radius: 999px; }
+.liquid-content .text-btn:hover { background: #ffffff12; }
+.liquid-content .tip { background: #ffffff12; color: var(--brand-on-dark); border: 1px solid #91a7ce; }
+.liquid-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 32px; color: var(--brand-on-dark); font-size: 12px; }
+.liquid-footer button { color: white; border: 1px solid #91a7ce; }
+.liquid-footer button:hover { background: #ffffff12; }
+.elmam-liquid-login[data-paused="true"] .liquid-blob { animation-play-state: paused; translate: none; }
+@keyframes elmam-liquid-float { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(24px,-20px) scale(1.12); } 100% { transform: translate(-16px,24px) scale(.92); } }
+@media (max-width: 600px) { .liquid-content { padding: 24px; } .liquid-identity { align-items: start; flex-direction: column; } .liquid-stage { opacity: .3; } .liquid-blob { filter: blur(10px); } }
+@media (prefers-reduced-motion: reduce) { .liquid-blob { animation: none; translate: none; transition: none; } }
