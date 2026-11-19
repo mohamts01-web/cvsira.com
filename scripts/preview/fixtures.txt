@@ -1,0 +1,142 @@
+const id = '11111111-1111-4111-8111-111111111111';
+const copyId = '22222222-2222-4222-8222-222222222222';
+const user = {id:'33333333-3333-4333-8333-333333333333', email:'tester@example.invalid'};
+const serve = process.argv.includes('--serve');
+const loginMode = process.argv.includes('--login');
+const fullDrafts = process.argv.includes('--full-drafts');
+const resumeCheckout = process.argv.includes('--checkout-resume');
+const checkoutMode = resumeCheckout || process.argv.includes('--checkout');
+let paid = !checkoutMode;
+let paymentRequest;
+let paidAccountRead = false;
+const makeSession = () => ({user,access_token:'fake-access-token',refresh_token:'fake-refresh-token',token_type:'bearer',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600});
+const english = process.argv.includes('--english');
+const before = english ? 'Experience reconciling invoices.' : 'خبرة في مطابقة الفواتير.';
+const after = english ? 'Reconciled purchase invoices with expense records.' : 'طابقت فواتير المشتريات مع السجلات.';
+const source = {id,title:'السيرة الأساسية',revision:1,approved_revision:null,updated_at:'2026-11-17T00:00:00Z',
+  content:{...emptyResume(),language:english?'en':'ar',name:english?'Sample Applicant':'اسم تجريبي',email:'tester@example.invalid',headline:english?'Junior Accountant':'محاسب',summary:before,skills:['Excel']},
+  design:{...defaultDesign(),targetVacancy:{id:102,title:'فرصة سابقة'}}};
+const vacancy = {id:1454,title:'محاسب مبتدئ',company:'شركة تجريبية',location:'الرياض',qualification:null,experience:null,description:'مطابقة الفواتير',aggregate:false};
+let copy, tailoredRequest, pdfRequested=false;
+const applications=new Map();
+const interviews=new Map();
+const linkedin=new Map();
+if(serve){
+  copy={...source,id:copyId,title:"سيرة محاسب معتمدة للتجربة",approved_revision:1};
+  applications.set(102,{id:102,title:'فرصة محاسبة',company:'شركة تجريبية',stage:'saved'});
+  applications.set(1454,{id:1454,title:vacancy.title,company:vacancy.company,stage:'interview'});
+}
+
+const server =
+  const path = new URL(req.url,'http://localhost').pathname;
+  const json = (value,status=200) => {res.writeHead(status,{'Content-Type':'application/json'});res.end(JSON.stringify(value));};
+  if(loginMode && ['/auth/v1/otp','/auth/v1/verify'].includes(path)){
+    let body='';for await(const chunk of req)body+=chunk;
+    const input=JSON.parse(body);
+    if(input.email!==user.email || (path.endsWith('/verify')&&input.token!=='135790'))
+      return json({message:'Invalid fixture credentials'},400);
+    return json(path.endsWith('/verify')?makeSession():{});
+  }
+  if(path==='/__jobs-preview/api/cv-job/1454') return json(vacancy);
+  if(path==='/__jobs-preview/api/cv-job/102') return json({...vacancy,id:102,title:'فرصة سابقة'});
+  if(path==='/api/discover-jobs') {
+    const keyword=new URL(req.url,'http://localhost').searchParams.get('q');
+    if(!serve)assert(['محاسب','Excel'].includes(keyword));
+    return json({jobs:[
+      {id:1460,title:'محاسب مساعد',company:'شركة اختبار',location:'جدة'},
+      {id:1454,title:'محاسب مبتدئ Excel',company:'شركة تجريبية',location:'الرياض'},
+    ].filter(job=>!serve || (keyword && [job.title,job.company,job.location].some(value=>value.includes(keyword))))});
+  }
+  if(path==='/mock/me') {
+    const active=paid;
+    if(resumeCheckout && active) {
+      await new Promise(resolve=>setTimeout(resolve,700));
+      paidAccountRead=true;
+    }
+    return json({id:user.id,telegramLinked:false,membership:active?{active:true,expires:'2030-01-01',maxDrafts:fullDrafts?1:2,aiRemaining:4,aiLimit:5,aiUsed:1}:null});
+  }
+  if(path==='/mock/billing/whop/catalog') return json({ready:true,environment:'live',offer:{amountMinor:1000,days:30,drafts:2,aiOperations:3}});
+  if(path==='/mock/billing/whop/status') {
+    if(resumeCheckout)paid=true;
+    return json({completed:paid});
+  }
+  if(path==='/mock/billing/whop/checkout'){
+    let body='';for await(const chunk of req)body+=chunk;
+    paymentRequest=JSON.parse(body);
+    paid=true;
+    return json({completed:true});
+  }
+  if(path==='/mock/applications') {
+    if(req.method==='POST') {
+      let body=''; for await(const chunk of req) body+=chunk;
+      const entry=JSON.parse(body);
+      if(entry.stage) applications.set(entry.id,entry);
+      else applications.delete(entry.id);
+    }
+    return json([...applications.values()]);
+  }
+  if(path==='/mock/interviews') return json([...interviews.values()]);
+  if(path==='/mock/linkedin') return json([...linkedin.keys()]);
+  if(path.startsWith('/mock/linkedin/')){
+    const id=path.split('/').at(-1);
+    const existing=linkedin.get(id);
+    if(req.method==='GET')return json(existing??null);
+    if(req.method==='PUT'){
+      let body='';for await(const chunk of req)body+=chunk;
+      const incoming=JSON.parse(body);
+      if((existing?.revision??0)!==incoming.revision)return json({error:'تغيّر ملف LinkedIn.'},409);
+      const saved={sections:incoming.sections,revision:incoming.revision+1};
+      linkedin.set(id,saved);
+      return json(saved);
+    }
+  }
+  if(path.startsWith('/mock/interviews/')) {
+    const id=Number(path.split('/').at(-1));
+    const existing=interviews.get(id);
+    if(req.method==='GET')return json(existing??null);
+    if(req.method==='PUT'){
+      let body='';for await(const chunk of req)body+=chunk;
+      const incoming=JSON.parse(body);
+      if((existing?.revision??0)!==incoming.revision)return json({error:'تغيّرت الجلسة على جهاز آخر.'},409);
+      const saved={...incoming,revision:incoming.revision+1,updated:new Date().toISOString()};
+      interviews.set(id,saved);
+      return json(saved);
+    }
+  }
+  if(path==='/mock/drafts' && req.method==='GET') return json(copy?[copy,source]:[source]);
+  if(path==='/mock/drafts/'+id && req.method==='GET') return json(source);
+  if(path==='/mock/drafts/'+copyId && req.method==='GET') return json(copy);
+  if(req.method==='POST' && path==='/mock/drafts/'+id+'/approve'){
+    source.approved_revision=source.revision;
+    return json(source);
+  }
+  if(req.method==='POST' && path==='/mock/drafts/'+copyId+'/approve' && copy){
+    copy.approved_revision=copy.revision;
+    return json(copy);
+  }
+  if(path==='/fixture.pdf') {
+    pdfRequested=true;
+    const pdf=serve?await readFile('private/pdf-local-check/ar-classic-short.pdf'):'%PDF-fixture';
+    res.writeHead(200,{'Content-Type':'application/pdf'});
+    return res.end(pdf);
+  }
+  if(req.method==='POST' && ['/mock/jobs','/mock/drafts'].includes(path)) {
+    let body='';for await(const chunk of req) body+=chunk;
+    const input=JSON.parse(body);
+    if(path==='/mock/jobs') {
+      if(input.kind==='export') {
+        assert.equal(input.draftId,copyId);
+        return json({id:'export-1',state:'completed',kind:'export',base_revision:1,result:{downloadUrl:'/fixture.pdf'}});
+      }
+      if(input.kind==="chat"){
+        if (!serve) assert.ok(input.history[0].text.includes("الفاتورة"));
+        return json({id:"review-1",kind:"chat",state:"completed",result:{message:"نقطة قوة تجريبية: ربطت الإجابة بمطابقة الفاتورة."}});
+      }
+      tailoredRequest=input;
+      return json({id:'job-1',state:'completed',kind:'improve',base_revision:1,result:{content:{...source.content,summary:after}}});
+    }
+    copy={...source,...input,id:copyId};
+    return json(copy);
+  }
+
+  if(path.startsWith('/mock/')) return json

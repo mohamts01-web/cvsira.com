@@ -1,0 +1,14 @@
+node_modules*
+dist/
+dist-netlify-review/
+*.log
+*.zip
+.env
+.env.*
+!.env.example
+private/
+.netlify/
+secrets/
+
+reference/
+review-artifacts/

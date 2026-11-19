@@ -1,0 +1,25 @@
+{
+  "projectId": "72996988",
+  "functions": {
+    "etmam-api": {
+      "hasChanged": false,
+      "hash": "7c0e8b71ff71a6047deef960a45ca472cc8d4a781b2fef71dab77551572562d3295a61267ab3740cff5afc0cb8ec317ca0d8f3d04437fd07acd072b59f6d3f72"
+    },
+    "etmam-maintenance": {
+      "hasChanged": false,
+      "hash": "deeedf13410a0cb028ad9dccc7a041d5ebd3d66853446c57a9ac714781337d22295a61267ab3740cff5afc0cb8ec317ca0d8f3d04437fd07acd072b59f6d3f72"
+    },
+    "etmam-paddle-webhook": {
+      "hasChanged": false,
+      "hash": "74a5b7d386657112d5a65ba96f08b546c89b5aa871fe90a507a5b13d7973f27e295a61267ab3740cff5afc0cb8ec317ca0d8f3d04437fd07acd072b59f6d3f72"
+    },
+    "etmam-telegram": {
+      "hasChanged": false,
+      "hash": "5d23403336f4647eff3124e86a68bd8088cd53ad887d8996b1583eda2211e171295a61267ab3740cff5afc0cb8ec317ca0d8f3d04437fd07acd072b59f6d3f72"
+    },
+    "etmam-whop-webhook": {
+      "hasChanged": false,
+      "hash": "987f651018182bc46ebbd6422bf52983866641fbe86f146c56dc7e40403e1b4a295a61267ab3740cff5afc0cb8ec317ca0d8f3d04437fd07acd072b59f6d3f72"
+    }
+  }
+}

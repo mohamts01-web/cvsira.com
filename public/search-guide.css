@@ -1,0 +1,20 @@
+@import url("/brand-tokens.css");
+@font-face{font-family:Tajawal;src:url("/fonts/tajawal-arabic-400-normal.woff2");font-display:swap}
+@font-face{font-family:Tajawal;src:url("/fonts/tajawal-arabic-700-normal.woff2");font-weight:700;font-display:swap}
+:root{font:1rem/1.8 Tajawal,Arial,sans-serif;color:var(--brand-navy);background:var(--brand-background)}
+body{margin:0}
+header,main{max-width:56rem;margin:auto;padding:24px}
+header,nav{display:flex;gap:24px;flex-wrap:wrap}
+header{justify-content:space-between;font-weight:700;border-bottom:1px solid var(--brand-border);margin-bottom:40px}
+header a{min-height:44px;display:inline-flex;align-items:center;color:var(--brand-navy)}
+header img{width:104px;height:50px;object-fit:contain}
+main{background:var(--brand-white);border:1px solid var(--brand-border);border-radius:var(--radius-panel);padding:clamp(24px,5vw,64px);box-shadow:var(--brand-shadow);margin-bottom:48px}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.2;text-wrap:balance}
+h2{font-size:24px;line-height:1.2}
+section{border-block-start:1px solid var(--brand-border);margin-block:32px;padding-block-start:16px}
+a{color:var(--brand-blue);text-underline-offset:4px;overflow-wrap:anywhere}
+.action{display:inline-flex;align-items:center;min-height:48px;background:var(--brand-gradient);color:white;text-decoration:none;border-radius:var(--radius-control);padding:8px 24px;margin-block:24px;font-weight:700;box-shadow:var(--brand-glow)}
+a:focus-visible{outline:3px solid var(--brand-blue);outline-offset:4px}
+@media(max-width:600px){header{margin-bottom:24px}main{margin-inline:16px;padding:24px;box-shadow:none}nav{gap:16px}}
+
+:root{color-scheme:dark;--brand-navy:#eeedf1;--brand-background:#111014;--brand-white:#1b1621;--brand-border:#3b3047;--brand-blue:#91ddbd;--brand-gradient:linear-gradient(130deg,#6cba94,#9addbd);--brand-shadow:inset 0 -60px 120px -70px #ffffff0d}header img{background:#f5f5ed;border-radius:8px;padding:5px}main{border-radius:16px}h1,h2{line-height:1.45}.action{color:#11261a}a:focus-visible{outline-color:#9de5c7}

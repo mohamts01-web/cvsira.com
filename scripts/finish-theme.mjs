@@ -1,0 +1,8 @@
+import fs from "node:fs";
+let main=fs.readFileSync("src/main.tsx","utf8");const seen=new Set();main=main.split("\n").filter(row=>{if(!row.startsWith('import "')||!row.endsWith('.css";'))return true;if(seen.has(row))return false;seen.add(row);return true}).join("\n");fs.writeFileSync("src/main.tsx",main);
+let html=fs.readFileSync("index.html","utf8").replace(/<script>try\{var t=localStorage[\s\S]*?<\/script>/,'<script src="/theme-init.js"></script>');fs.writeFileSync("index.html",html);
+const tokens=fs.readFileSync("src/theme/theme-tokens.css","utf8");
+fs.writeFileSync("public/theme.css",tokens+"\n.action{background:var(--ui-accent);color:var(--ui-on-accent)}header img{background:#fff}button[data-theme-toggle]{background:var(--ui-surface-2);border:1px solid var(--ui-border);color:var(--ui-text);min-height:44px;border-radius:8px;padding:8px 15px;font:inherit;cursor:pointer}a:focus-visible,button:focus-visible{outline:2px solid var(--ui-accent);outline-offset:4px}\n");
+let builder=fs.readFileSync("scripts/build-search-pages.mjs","utf8").replace('<html lang="ar" dir="rtl"><head><meta charset="utf-8">','<html lang="ar" dir="rtl"><head><meta charset="utf-8"><script src="/theme-init.js"></script>').replace('<link rel="stylesheet" href="/search-guide.css">','<link rel="stylesheet" href="/search-guide.css"><link rel="stylesheet" href="/theme.css">').replace('<a href="/plans">الباقة</a></header>','<a href="/plans">الباقة</a><button type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح">الوضع الفاتح</button></header>');fs.writeFileSync("scripts/build-search-pages.mjs",builder);
+// Registry metadata, not a new auth provider. The existing Supabase OTP remains authoritative.
+console.log("Static public guides now share the persisted theme.");

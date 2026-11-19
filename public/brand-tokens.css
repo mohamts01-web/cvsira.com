@@ -1,0 +1,22 @@
+:root {
+  --brand-navy: #0B1F4B;
+  --brand-blue: #1F5BFF;
+  --brand-purple: #7A5CFF;
+  --brand-turquoise: #00C2A8;
+  --brand-mint: #E6F7F4;
+  --brand-background: #F4F8FC;
+  --brand-white: #FFFFFF;
+  --brand-text-muted: #52627B;
+  --brand-on-dark: #D8E5FA;
+  --brand-border: #D8E3F1;
+  --brand-glass: rgba(255,255,255,.88);
+  --brand-shadow: 0 24px 64px rgba(11,31,75,.09);
+  --brand-glow: 0 12px 40px rgba(31,91,255,.22);
+  --brand-gradient: linear-gradient(115deg,var(--brand-blue),var(--brand-navy),var(--brand-blue));
+  --radius-control: 999px;
+  --radius-field: 16px;
+  --radius-panel: 32px;
+  --motion-fast: 180ms;
+  --motion-reveal: 600ms;
+  --motion-ease: cubic-bezier(.22,1,.36,1);
+}
