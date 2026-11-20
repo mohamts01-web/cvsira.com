@@ -14,7 +14,7 @@ export function WorkspaceNav({path}:{path:string}){
  return <aside className="anchor-sidebar"><span className="anchor-eyebrow">مساحتك المهنية</span><nav aria-label="خدمات إلمام">
  <a href="/documents" aria-current={path==="/documents"&&!location.hash?"page":undefined}><LayoutDashboard size={19}/>نظرة عامة</a>
  {resumeServices.map(s=><a key={s.path} href={s.path} aria-current={(s.path.split("#")[0]===path&&(s.path.includes("#")?!!location.hash:true))?"page":undefined}><s.icon size={19}/>{s.title}</a>)}
- <span className="anchor-nav-divider"/><a href="/tools" aria-current={path==="/tools"?"page":undefined}><Layers size={19}/>أدوات التوظيف</a>
+ <span className="anchor-nav-divider"/><a href="/jobs"><BriefcaseBusiness size={19}/>تصفّح الوظائف</a><a href="/tools" aria-current={path==="/tools"?"page":undefined}><Layers size={19}/>أدوات التوظيف</a>
  {careerTools.map(s=><a key={s.path} href={s.path} className="tool-subroute" aria-current={s.path===path?"page":undefined}><s.icon size={18}/>{s.title}</a>)}
  <span className="anchor-nav-divider"/><a href="/profile" aria-current={path==="/profile"?"page":undefined}><UserRound size={19}/>الملف الشخصي</a><a href="/plans" aria-current={path==="/plans"?"page":undefined}><CreditCard size={19}/>الباقة والرصيد</a></nav>
  <div className="anchor-sidebar-note"><span className="anchor-status-dot"/><a href="https://jobs.cvsira.com/" target="_blank" rel="noreferrer">إلمام وظائف<ArrowUpLeft size={16}/></a></div></aside>

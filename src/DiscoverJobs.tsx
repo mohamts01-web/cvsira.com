@@ -129,7 +129,7 @@ export default function DiscoverJobs({ drafts }: { drafts: Draft[] }) {
     const lookups = await Promise.allSettled(
       keywords.map(async (keyword) => {
         const response = await fetch(
-          "/api/discover-jobs?" + new URLSearchParams({ q: keyword }),
+          "/api/job-library?" + new URLSearchParams({ q: keyword }),
           {
             signal: next.signal,
             credentials: "omit",
@@ -166,6 +166,7 @@ export default function DiscoverJobs({ drafts }: { drafts: Draft[] }) {
       id="discover-jobs"
       aria-labelledby="discover-jobs-title"
     >
+      <div className="jl-discover-link"><div><strong>تبي تشوف كل الفرص؟</strong><p>تصفّح المكتبة كاملة مع فلاتر المدينة والتخصص والمؤهل.</p></div><a className="secondary" href="/jobs">تصفّح الوظائف<ArrowLeft size={16}/></a></div>
       <div className="tool-span">
         <ToolGuide
           steps={[

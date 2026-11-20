@@ -3,6 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
 
 const jobsPreviewProxy = {
+  "^/api/job-library(?:\\?|$)": {target:"https://jobs.cvsira.com",changeOrigin:true,rewrite:(path:string)=>path.replace(/^\/api\/job-library/,"/api/jobs")},
+  "^/api/job-vacancy/[0-9]{1,12}$": {target:"https://jobs.cvsira.com",changeOrigin:true,rewrite:(path:string)=>path.replace(/^\/api\/job-vacancy/,"/api/cv-job")},
   "^/api/discover-jobs(?:\\?|$)": {
     target: "https://jobs.cvsira.com",
     changeOrigin: true,

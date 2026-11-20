@@ -123,6 +123,7 @@ const home = appWithoutNoindex.replace(/<meta (?:property="og:image"|name="twitt
 <main class="public-home-fallback"><h1>فرصتك الجاية، خلّك جاهز لها.</h1>
 <p>${homeDescription}</p>
 <a href="/start">ابدأ خطوتك الجاية</a>
+<a href="/jobs">تصفّح الوظائف النشطة</a>
 <p>${escape(aboutElmam)}</p><a href="/about/">عن إلمام</a>
 <h2>أدواتك من السيرة إلى المقابلة</h2><nav aria-label="خدمات إلمام">${links}</nav>
 <nav aria-label="أدلة السيرة الذاتية">${pages.map(page => `<a href="/${page.slug}/">${page.title}</a>`).join("")}</nav>

@@ -1,6 +1,7 @@
 $ErrorActionPreference='Stop'
 $env:VITE_PRICING_PREVIEW='true'
 $env:VITE_JOB_FIXTURES='true'
+$env:VITE_LIVE_JOB_LIBRARY='true'
 $env:VITE_EMAIL_LOGIN_READY='true'
 $env:VITE_SUPABASE_URL='https://elmam-preview.invalid'
 $env:VITE_SUPABASE_PUBLISHABLE_KEY='fixture-key'

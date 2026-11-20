@@ -22,8 +22,8 @@ export type Vacancy = {
 };
 
 export async function fetchVacancy(id: number, signal: AbortSignal): Promise<Vacancy> {
-  const base = import.meta.env.VITE_JOB_FIXTURES === "true" || ["127.0.0.1", "localhost"].includes(location.hostname) ? "/__jobs-preview" : jobsOrigin;
-  const response = await fetch(`${base}/api/cv-job/${id}`, { signal, credentials: "omit" });
+  const endpoint = import.meta.env.VITE_LIVE_JOB_LIBRARY === "true" ? `/api/job-vacancy/${id}` : (import.meta.env.VITE_JOB_FIXTURES === "true" || ["127.0.0.1", "localhost"].includes(location.hostname) ? "/__jobs-preview" : jobsOrigin)+`/api/cv-job/${id}`;
+  const response = await fetch(endpoint, { signal, credentials: "omit" });
   if (!response.ok) throw Error("job_unavailable");
   const result: Vacancy = await response.json();
   if (result.id !== id || typeof result.title !== "string" || !result.title.trim()) throw Error("invalid_job");

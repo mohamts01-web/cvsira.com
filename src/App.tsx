@@ -84,6 +84,7 @@ import { useJobTarget, JobTargetCard } from "./JobTarget";
 import { captureCvEvent, captureCvVisit } from "./analytics";
 
 const DiscoverJobs = lazy(() => import("./DiscoverJobs"));
+const JobLibrary = lazy(() => import("./JobLibrary"));
 const LinkedInKit = lazy(() => import("./LinkedInKit"));
 const LinkedInLibrary = lazy(async () => ({ default: (await import("./LinkedInKit")).LinkedInLibrary }));
 
@@ -209,6 +210,7 @@ export default function App() {
       "/documents": location.hash === "#resume-drafts" ? "مكتبة السير" : "مساحتي المهنية",
       "/plans": "الباقة والرصيد", "/assistant": "مساعد إلمام", "/tools": "أدوات التوظيف", "/profile": "ملفي الشخصي",
       "/start": "إنشاء سيرة جديدة", "/try": "محرر السيرة", "/privacy": "الخصوصية",
+      "/jobs": "تصفّح الوظائف النشطة",
       "/terms": "شروط الاستخدام", "/contact": "تواصل معنا", "/refunds": "الإلغاء والاسترداد",
     };
     const title = titles[path] ?? careerTools.find(tool => tool.path === path)?.title ??
@@ -216,6 +218,7 @@ export default function App() {
     document.title = path === "/" ? homeTitle : title + " | إلمام";
     const descriptions: Record<string,string> = {
       "/": homeDescription,
+      "/jobs": "استكشف مكتبة إلمام وظائف حسب المدينة والتخصص والمؤهل، وابحث برقم الإعلان ثم جهّز سيرتك للفرصة.",
       "/assistant": "حسّن صياغة سيرتك وترجم محتواها وراجع اقتراحات مساعد إلمام قبل اعتمادها.",
       "/tools/jobs": "ابحث عن فرص إلمام بالمهارة أو المسمى أو رقم الإعلان وخصّص سيرتك للوظيفة.",
       "/tools/interviews": "تدرّب على إجابات المقابلة وراجع ملاحظات عملية على إجاباتك المكتوبة.",
@@ -807,6 +810,7 @@ export default function App() {
       <div className="container nav">
         <Brand onClick={() => go("/")} />
         {path === "/" && <nav aria-label="التنقل الرئيسي">
+          <a href="/jobs">الوظائف</a>
           <a href="/services/">الخدمات</a>
           <a href="/tools">أدوات التوظيف</a>
           <a href="/#templates">القوالب</a>
@@ -849,6 +853,7 @@ export default function App() {
             if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
           }}>
             {path === "/" ? <><a href="/services/">خدمات إلمام</a>
+            <a href="/jobs">تصفّح الوظائف</a>
             <a href="/tools">أدوات التوظيف</a>
             <a href="/#templates">القوالب والاستوديو</a>
             <a href="/plans">الأسعار</a></> : <a href="/">الرئيسية</a>}
@@ -875,6 +880,7 @@ export default function App() {
       )}
       {path.startsWith("/for-job/") && (
         <main className="container job-target-landing">
+          <a className="text-btn" href="/jobs">← العودة لتصفّح الوظائف</a>
           <JobTargetCard target={targetJob} />
           <section className="job-resume-step" aria-labelledby="job-resume-title">
             <div className="job-journey-heading">
@@ -915,6 +921,7 @@ export default function App() {
         </main>
       )}
       {path === "/" && <Home onStart={() => start()} onTry={(template) => { start(true); if (template) setDesign({ ...defaultDesign(), template }); }} onPlans={() => go("/plans")} />}
+      {path === "/jobs" && <Suspense fallback={<main className="container jl-page" role="status">جارٍ تحميل مكتبة الوظائف…</main>}><JobLibrary /></Suspense>}
       {path === "/profile" && (session ? <PersonalProfile key={session.user.id} user={session.user} drafts={drafts} onOpen={id=>go("/editor/"+id)} onAccount={()=>setModal("membership")}/> : <main className="container personal-profile-page"><h1>ملفي الشخصي</h1><p>سجّل الدخول لعرض بياناتك وسيرك المحفوظة.</p><button className="primary" onClick={()=>setModal("login")}>تسجيل الدخول</button></main>)}
 
       {path === "/plans" && (

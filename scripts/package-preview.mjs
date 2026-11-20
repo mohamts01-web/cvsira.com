@@ -172,7 +172,7 @@ writeFileSync(folder+"preview-bootstrap.js",bootstrap);
 writeFileSync(folder+"index.html",html);
 const home=readFileSync(folder+"_home.html","utf8").replace(script[0],'<script type="module" src="/preview-bootstrap.js"></script>').replace("<head>",'<head><meta name="robots" content="noindex,nofollow">');
 writeFileSync(folder+"_home.html",home);
-writeFileSync(folder+"_redirects","/ /_home.html 200!\n/* /index.html 200\n");
+writeFileSync(folder+"_redirects","/ /_home.html 200!\n/api/job-library https://elmam-jobs-site.mohamts01.workers.dev/__netlify/api/jobs 200!\n/api/job-vacancy/:id https://elmam-jobs-site.mohamts01.workers.dev/__netlify/api/cv-job/:id 200!\n/* /index.html 200\n");
 writeFileSync(folder+"_headers","/*\n  X-Robots-Tag: noindex, nofollow\n  Content-Security-Policy: connect-src 'self' https://accounts.google.com https://gmail.googleapis.com; object-src 'none'\n  X-Content-Type-Options: nosniff\n");
 writeFileSync(folder+"robots.txt","User-agent: *\nDisallow: /\n");
 copyFileSync("scripts/preview/sample-cv.pdf",folder+"sample-cv.pdf");

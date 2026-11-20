@@ -13,6 +13,7 @@ import { FAQ } from "./faq";
 import { PolicyLinks } from "../LegalPage";
 import { services, aboutElmam } from "../../shared/services.mjs";
 import HomeMarquees from "./HomeMarquees";
+import { HomeJobs } from "../JobLibrary";
 const templates = [
   { id: "classic", name: "الأساسي", desc: "ترتيب واضح يضع خبرتك أولًا." },
   { id: "modern", name: "الحديث", desc: "مساحة متوازنة وشخصية مهنية." },
@@ -34,6 +35,7 @@ export default function AnchorHome({
     <main className="anchor-home">
       <MagicHero onStart={onStart} onTry={() => onTry()} />
       <HomeMarquees />
+      <HomeJobs />
       <section className="ds-home-services anchor-section">
         <div className="anchor-section-heading">
           <div>

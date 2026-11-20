@@ -4,5 +4,7 @@ https://etmam-cv.netlify.app/graduate-resume/ https://cv.cvsira.com/graduate-res
 https://etmam-cv.netlify.app/english-resume/ https://cv.cvsira.com/english-resume/ 301!
 https://etmam-cv.netlify.app/sitemap.xml https://cv.cvsira.com/sitemap.xml 301!
 / /_home.html 200!
+/api/job-library https://elmam-jobs-site.mohamts01.workers.dev/__netlify/api/jobs 200!
+/api/job-vacancy/:id https://elmam-jobs-site.mohamts01.workers.dev/__netlify/api/cv-job/:id 200!
 /api/discover-jobs https://jobs.cvsira.com/api/jobs 200
 /* /index.html 200
