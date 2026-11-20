@@ -77,6 +77,7 @@ import ApplicationTracker from "./ApplicationTracker";
 import ApplicationLetter from "./ApplicationLetter";
 
 import type { Vacancy } from "./JobTarget";
+import { downloadResumeFile } from "./download";
 import { confirmedApplicationEmail } from "../shared/application-recipient.mjs";
 import ResumeDiagnosis from "./ResumeDiagnosis";
 import ImportReport, { type Report } from "./ImportReport";
@@ -205,6 +206,16 @@ const isTailoredDraft = (draft: Draft) => Boolean(draft.design.targetVacancy) ||
 export default function App() {
   const [tailoredOnly, setTailoredOnly] = useState(false);
   const [path, go] = useRoute();
+  useEffect(()=>{
+    const closeDownload=(event:PointerEvent|KeyboardEvent)=>{
+      const menu=document.querySelector<HTMLDetailsElement>('#editor-download[open]');
+      if(!menu)return;
+      if(event instanceof KeyboardEvent){if(event.key!=="Escape")return;menu.removeAttribute("open");menu.querySelector("summary")?.focus()}
+      else if(event.target instanceof Node&&!menu.contains(event.target))menu.removeAttribute("open");
+    };
+    document.addEventListener("pointerdown",closeDownload);document.addEventListener("keydown",closeDownload);
+    return ()=>{document.removeEventListener("pointerdown",closeDownload);document.removeEventListener("keydown",closeDownload)};
+  },[]);
   useEffect(() => {
     const titles: Record<string, string> = {
       "/": "سيرتك واستعدادك للوظيفة في مكان واحد",
@@ -555,16 +566,10 @@ export default function App() {
       if (result.state !== "completed")
         throw Error(result.error || "تعذر التصدير الآن.");
       if (result.result?.downloadUrl) {
-        const a = document.createElement("a");
         const response = await fetch(result.result.downloadUrl);
         if (!response.ok) throw Error("تعذر تنزيل الملف. حاول مجددًا.");
-        const blobUrl = URL.createObjectURL(await response.blob());
-        a.href = blobUrl;
-        a.download = pdfFilename(latest.current.title);
-        a.rel = "noopener";
-        a.click();
+        await downloadResumeFile(await response.blob(),pdfFilename(latest.current.title),"pdf");
         captureCvEvent("cv pdf downloaded", d.design.targetVacancy?.id);
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 30000);
       } else throw Error("ملف التنزيل غير متاح.");
     } catch (e) {
       fail(e);
@@ -589,12 +594,7 @@ export default function App() {
       const approved = await api.approve(current.draft);
       setDraft(approved);
       const { resumeDocx } = await import("../shared/resume-docx.mjs");
-      const url = URL.createObjectURL(await resumeDocx(approved.content, approved.design));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = pdfFilename(approved.title).replace(/\.pdf$/i, ".docx");
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      await downloadResumeFile(await resumeDocx(approved.content, approved.design),pdfFilename(approved.title).replace(/\.pdf$/i, ".docx"),"docx");
     } catch (error) {
       fail(error);
     } finally {
@@ -1361,6 +1361,11 @@ export default function App() {
               </span>
             </div>
             <div className="editor-actions"><ThemeToggle/>
+              <button type="button" className="editor-tailor-trigger" disabled={busy||readonly||targetJob.loading} onClick={()=>{
+                if(!targetJob.job){if(dirty){setError("احفظ تعديلاتك قبل اختيار وظيفة.");return}go("/jobs");return}
+                setPanel("assistant");setMobile("panel");
+                requestAnimationFrame(()=>document.getElementById("editor-tailor-job")?.scrollIntoView({block:"start",behavior:"smooth"}));
+              }}><span className="editor-tailor-dot" aria-hidden="true"/><Sparkles size={16} aria-hidden="true"/><span>تخصيص السيرة</span></button>
               <button
                 className="icon-btn"
                 aria-label="تراجع"
@@ -1389,14 +1394,17 @@ export default function App() {
                   <ChevronDown size={14} aria-hidden="true" />
                 </summary>
                 <div className="editor-download-options">
+                  <p className="editor-download-heading">اختر صيغة سيرتك</p>
+                  {(!data.name.trim()||(!data.email.trim()&&!data.phone.trim()))&&<div className="editor-download-readiness"><p>أكمل اسمك ووسيلة تواصل قبل التنزيل.</p><button type="button" onClick={event=>{event.currentTarget.closest("details")?.removeAttribute("open");setPanel("content");setMobile("panel");chooseSection("identity")}}>أكمل البيانات المطلوبة</button></div>}
                   <button type="button" disabled={busy || saving} onClick={(event) => {
                     event.currentTarget.closest("details")?.removeAttribute("open");
                     void exportPDF();
-                  }}><strong>PDF</strong><small>نسخة جاهزة للتقديم</small></button>
+                  }} aria-label="تنزيل PDF"><FileText size={22} aria-hidden="true"/><span><strong>تنزيل PDF</strong><small>نسخة جاهزة للتقديم</small></span><Download size={17} aria-hidden="true"/></button>
                   <button type="button" disabled={busy || saving} onClick={(event) => {
                     event.currentTarget.closest("details")?.removeAttribute("open");
                     void exportWord();
-                  }}><strong>Word</strong><small>نسخة قابلة للتحرير</small></button>
+                  }} aria-label="تنزيل Word"><FileText size={22} aria-hidden="true"/><span><strong>تنزيل Word</strong><small>ملف DOCX قابل للتحرير</small></span><Download size={17} aria-hidden="true"/></button>
+                  {import.meta.env.VITE_PRICING_PREVIEW==="true"&&<p className="editor-download-demo">في هذه المعاينة: PDF نموذج تجريبي؛ Word يُنشأ من بيانات مسودتك.</p>}
                 </div>
               </details>
             </div>
@@ -1735,7 +1743,7 @@ export default function App() {
               )}
               {panel === "assistant" && (
                 <div className="assistant-panel anchor-inline-assistant">
-                  <JobTargetCard target={targetJob} compact resume={data} />
+                  <details className="editor-tailor-details" id="editor-tailor-job"><summary>متطلبات الوظيفة المستهدفة</summary><JobTargetCard target={targetJob} compact resume={data} /></details>
                   {targetJob.job && <button className="secondary full" disabled={busy || readonly} onClick={() => void runAI("improve",{},latest.current.draft,targetJob.job)}>خصّص سيرتي لهذه الوظيفة</button>}
                   <AIWorkspace drafts={draft ? [draft] : []} selected={draft?.id} busy={busy || aiRunning}
                     remaining={account?.membership?.aiRemaining ?? 0} chat={chat}
