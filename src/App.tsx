@@ -1,4 +1,5 @@
 import PreviewNotice from "./anchor/PreviewNotice";
+import { homeDescription, homeTitle } from "../shared/services.mjs";
 import { assistantSections, type AssistantAction, type AssistantSection } from "./assistant-actions";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -202,7 +203,7 @@ export default function App() {
   const [path, go] = useRoute();
   useEffect(() => {
     const titles: Record<string, string> = {
-      "/": "إنشاء سيرة ذاتية ATS بالعربية والإنجليزية",
+      "/": "سيرتك واستعدادك للوظيفة في مكان واحد",
       "/documents": location.hash === "#resume-drafts" ? "مكتبة السير" : "مساحتي المهنية",
       "/plans": "الباقة والرصيد", "/assistant": "مساعد إلمام", "/tools": "أدوات التوظيف",
       "/start": "إنشاء سيرة جديدة", "/try": "محرر السيرة", "/privacy": "الخصوصية",
@@ -210,7 +211,31 @@ export default function App() {
     };
     const title = titles[path] ?? careerTools.find(tool => tool.path === path)?.title ??
       (path.startsWith("/for-job/") ? "تخصيص السيرة للوظيفة" : path.startsWith("/editor/") ? "محرر السيرة" : "مساحتي");
-    document.title = title + " | إلمام CV";
+    document.title = path === "/" ? homeTitle : title + " | إلمام CV";
+    const descriptions: Record<string,string> = {
+      "/": homeDescription,
+      "/assistant": "حسّن صياغة سيرتك وترجم محتواها وراجع اقتراحات مساعد إلمام قبل اعتمادها.",
+      "/tools/jobs": "ابحث عن فرص إلمام بالمهارة أو المسمى أو رقم الإعلان وخصّص سيرتك للوظيفة.",
+      "/tools/interviews": "تدرّب على إجابات المقابلة وراجع ملاحظات عملية على إجاباتك المكتوبة.",
+      "/tools/applications": "نظّم الفرص ورسائل التقديم وحالاتها في مساحتك المهنية.",
+      "/tools/linkedin": "جهّز محتوى ملف LinkedIn من سيرتك ثم عدّله واحفظه وانسخه إلى حسابك.",
+      "/documents": "سيرك وأدواتك المهنية وتقديماتك في مساحتك الخاصة على إلمام CV.",
+    };
+    const description=descriptions[path] ?? "إلمام CV — أدوات السيرة والاستعداد للوظيفة في مساحتك المهنية.";
+    const meta=(selector:string, attribute:string, value:string)=>{
+      let element=document.head.querySelector<HTMLMetaElement>(selector);
+      if(!element){element=document.createElement("meta");document.head.append(element);}
+      if(attribute==="name") element.name=selector.match(/name="([^"]+)"/)?.[1] ?? "";
+      else element.setAttribute("property",selector.match(/property="([^"]+)"/)?.[1] ?? "");
+      element.content=value;
+    };
+    meta('meta[name="description"]',"name",description);
+    meta('meta[property="og:title"]',"property",document.title);
+    meta('meta[property="og:description"]',"property",description);
+    meta('meta[name="robots"]',"name",import.meta.env.VITE_PRICING_PREVIEW === "true" ? "noindex,nofollow" : path==="/" ? "index,follow" : "noindex,follow");
+    const canonical=document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if(path!=="/")canonical?.remove();
+    else if(!canonical){const link=document.createElement("link");link.rel="canonical";link.href="https://cv.cvsira.com/";document.head.append(link);}
   }, [path, location.hash]);
   useEffect(() => captureCvVisit(), []);
   const [session, setSession] = useState<Session | null>(null);
@@ -780,6 +805,7 @@ export default function App() {
       <div className="container nav">
         <Brand onClick={() => go("/")} />
         <nav aria-label="التنقل الرئيسي">
+          <a href="/services/">الخدمات</a>
           <a href="/tools" aria-current={path.startsWith("/tools") ? "page" : undefined}>أدوات التوظيف</a>
           <a href="/#templates">القوالب</a>
           <a
@@ -821,6 +847,7 @@ export default function App() {
           <nav aria-label="التنقل على الجوال" onClick={(event) => {
             if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
           }}>
+            <a href="/services/">خدمات إلمام CV</a>
             <a href="/tools">أدوات التوظيف</a>
             <a href="/#templates">القوالب والاستوديو</a>
             <a href="/plans">الأسعار</a>

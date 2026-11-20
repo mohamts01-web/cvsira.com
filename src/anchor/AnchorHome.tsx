@@ -11,6 +11,7 @@ import { workspaceServices } from "./WorkspaceNav";
 import { HowItWorks } from "./how-it-works";
 import { FAQ } from "./faq";
 import { PolicyLinks } from "../LegalPage";
+import { services } from "../../shared/services.mjs";
 const templates = [
   { id: "classic", name: "الأساسي", desc: "ترتيب واضح يضع خبرتك أولًا." },
   { id: "modern", name: "الحديث", desc: "مساحة متوازنة وشخصية مهنية." },
@@ -51,20 +52,20 @@ export default function AnchorHome({
             <span className="ds-eyebrow">من السيرة إلى الفرصة</span>
             <h2>كل أدوات مسارك، معك.</h2>
           </div>
-          <p>اختر خطوتك، وأكمل من مساحتك المهنية.</p>
+          <p>اعرف ماذا تقدم لك كل خدمة، ثم ابدأ من الخطوة التي تحتاجها.</p>
         </div>
         <div className="ds-service-grid">
-          {workspaceServices.map((s) => (
+          {workspaceServices.map((s, index) => (
             <Reveal key={s.path}>
               <ProductCard>
-                <a className="ds-service-content" href={s.path}>
+                <a className="ds-service-content" href={"/services/" + ["resume-builder", "career-assistant", "job-tailoring", "interview-preparation", "applications", "linkedin-profile"][index] + "/"}>
                   <span className="ds-icon">
                     <s.icon size={25} />
                   </span>
                   <h3>{s.title}</h3>
                   <p>{s.description}</p>
                   <span className="ds-service-link">
-                    استكشف الخدمة
+                    كيف تساعدني؟
                     <ArrowLeft size={16} />
                   </span>
                 </a>
@@ -72,6 +73,15 @@ export default function AnchorHome({
             </Reveal>
           ))}
         </div>
+        <a className="secondary" href="/services/">تعرّف على جميع الخدمات<ArrowLeft size={16}/></a>
+      </section>
+      <section className="anchor-section service-journey" aria-labelledby="service-journey-title">
+        <div className="anchor-section-heading"><div><span className="ds-eyebrow">رحلة تناسب مرحلتك</span><h2 id="service-journey-title">وش خطوتك القادمة؟</h2></div><p>ابدأ من حاجتك الحالية، وأكمل بقية الأدوات عندما تحتاجها.</p></div>
+        <div className="service-journey-grid">{[
+          ["أبدأ مساري", "حوّل تعليمك ومشاريعك وتدريبك إلى سيرة واضحة، وجهّز محتوى ملفك المهني.", "/services/resume-builder/", "جهّز أساسك"],
+          ["لقيت وظيفة", "راجع متطلبات الإعلان، خصّص نسخة من سيرتك ونظّم رسالة التقديم والمتابعة.", "/services/job-tailoring/", "استعد لهذه الفرصة"],
+          ["عندي مقابلة", "تدرّب على شرح دورك بأمثلة فعلية، وراجع ملاحظات على إجاباتك المكتوبة.", "/services/interview-preparation/", "ابدأ التحضير"],
+        ].map(([title,copy,href,label],index)=><ProductCard key={href}><article><span className="ds-eyebrow">0{index+1}</span><h3>{title}</h3><p>{copy}</p><a href={href}>{label}<ArrowLeft size={16}/></a></article></ProductCard>)}</div>
       </section>
       <HowItWorks />
       <section className="anchor-section" id="templates">
@@ -172,7 +182,7 @@ export default function AnchorHome({
           </h2>
           <p>
             اختر فرصة من إلمام وظائف، راجع نسخة مخصصة، وجهّز رسالة التقديم
-            ومرفقها. أنت تؤكد قبل الإرسال.
+            ومرفقها، وتابع حالة طلبك. الإرسال المباشر من Gmail في مرحلة الاختبار لحسابات مصرح بها.
           </p>
           <a className="secondary" href="/tools/jobs">
             استكشف الوظائف
@@ -260,6 +270,7 @@ export default function AnchorHome({
           <ArrowLeft size={18} />
         </button>
       </section>
+      <section className="anchor-section" aria-labelledby="career-guides-title"><div className="anchor-section-heading"><div><span className="ds-eyebrow">تعلّم وطبّق</span><h2 id="career-guides-title">أدلة تساعد خطوتك القادمة.</h2></div><p>نصائح عملية للسوق السعودي، ثم أدوات تساعدك تطبقها.</p></div><nav className="service-guide-links" aria-label="أدلة إلمام">{[["/ats-resume/","ترتيب السيرة لأنظمة ATS"],["/graduate-resume/","سيرة حديث التخرج"],["/english-resume/","السيرة باللغة الإنجليزية"],["/tailor-resume-to-job/","تخصيص السيرة لوظيفة"],["/job-interview-preparation/","التحضير لمقابلة العمل"]].map(([href,label])=><a href={href} key={href}>{label}<ArrowLeft size={16}/></a>)}</nav></section>
       <FAQ />
       <section className="anchor-final">
         <div className="anchor-final-grid" aria-hidden="true">
@@ -271,7 +282,7 @@ export default function AnchorHome({
           <br />
           <em>تحكي عنك.</em>
         </h2>
-        <p>ابدأ من سيرتك، وكمل مسارك من مكان واحد.</p>
+        <p>ابدأ من سيرتك، وخصّصها لفرصتك واستعد للمقابلة من مكان واحد.</p>
         <button className="primary large" onClick={onStart}>
           أنشئ سيرتك الآن
           <ArrowLeft size={18} />
@@ -286,6 +297,7 @@ export default function AnchorHome({
           <img className="brand-footer-light" src="/elmam-brand.svg" alt="إلمام Elmam"/><img className="brand-footer-dark" src="/assets/logo-dark-bg.svg" alt="إلمام Elmam"/>
         </a>
         <p>مساحتك المهنية. من السيرة إلى الفرصة.</p>
+        <nav className="service-guide-links" aria-label="خدمات إلمام CV">{services.map(service=><a key={service.slug} href={"/services/"+service.slug+"/"}>{service.title}</a>)}</nav>
         <PolicyLinks />
         <span>© {new Date().getFullYear()} إلمام CV</span>
       </footer>

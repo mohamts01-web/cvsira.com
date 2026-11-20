@@ -1,13 +1,13 @@
 import {LayoutDashboard,FileText,Sparkles,BriefcaseBusiness,MessagesSquare,Send,Linkedin,CreditCard,ArrowUpLeft,Layers,ChevronLeft} from "lucide-react";
 const resumeServices=[
- {path:"/documents#resume-drafts",title:"سيرتي الذاتية",description:"أنشئ وحرّر نسخك المحفوظة.",icon:FileText,label:"محرر السيرة"},
- {path:"/assistant",title:"مساعد إلمام",description:"حسّن، ترجم وراجع سيرتك.",icon:Sparkles,label:"الذكاء الاصطناعي"},
+ {path:"/documents#resume-drafts",title:"سيرتي الذاتية",description:"ابنِ سيرتك بالعربية أو الإنجليزية واحتفظ بنسخك المرتبطة بالفرص.",icon:FileText,label:"محرر السيرة"},
+ {path:"/assistant",title:"مساعد إلمام",description:"حسّن صياغتك وترجم سيرتك، وراجع الاقتراحات قبل اعتمادها.",icon:Sparkles,label:"الذكاء الاصطناعي"},
 ];
 export const careerTools=[
  {legacy:"#discover-jobs",path:"/tools/jobs",title:"الوظائف المناسبة",description:"ابحث عن فرصة وخصّص سيرتك لها.",icon:BriefcaseBusiness,label:"استكشف الفرص"},
- {legacy:"#interview-library",path:"/tools/interviews",title:"تحضير المقابلة",description:"تدرّب على إجابات أكثر وضوحًا.",icon:MessagesSquare,label:"تدرّب بثقة"},
- {legacy:"#application-library",path:"/tools/applications",title:"متابعة التقديمات",description:"فرصك ورسائلك وحالات التقديم.",icon:Send,label:"نظّم خطواتك"},
- {legacy:"#linkedin-library-title",path:"/tools/linkedin",title:"ملف LinkedIn",description:"صغ حضورك المهني وانسخه لملفك.",icon:Linkedin,label:"حضورك المهني"}
+ {legacy:"#interview-library",path:"/tools/interviews",title:"تحضير المقابلة",description:"تدرّب على شرح خبرتك واحصل على ملاحظات لإجاباتك المكتوبة.",icon:MessagesSquare,label:"تدرّب بثقة"},
+ {legacy:"#application-library",path:"/tools/applications",title:"متابعة التقديمات",description:"جهّز رسالتك واجمع الفرص وحالات التقديم في سجل ترجع إليه.",icon:Send,label:"نظّم خطواتك"},
+ {legacy:"#linkedin-library-title",path:"/tools/linkedin",title:"ملف LinkedIn",description:"جهّز عنوانك ونبذتك وخبراتك من سيرتك، ثم عدّل المحتوى وانسخه لملفك.",icon:Linkedin,label:"حضورك المهني"}
 ];
 export const workspaceServices=[...resumeServices,...careerTools];
 export function WorkspaceNav({path}:{path:string}){

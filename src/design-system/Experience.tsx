@@ -139,14 +139,14 @@ export function MagicHero({
         </span>
         <Reveal>
           <h1>
-            خبرتك تستحق
+            سيرتك واستعدادك
             <br />
-            <em>سيرة تحكيها.</em>
+            <em>للوظيفة، هنا.</em>
           </h1>
         </Reveal>
         <p>
-          أنشئ سيرتك بالعربية أو الإنجليزية، خصّصها للوظيفة، وراجع اقتراحات
-          المساعد قبل اعتمادها.
+          من أول سيرة إلى الاستعداد للمقابلة. خصّص خبرتك للفرصة، جهّز محتوى
+          LinkedIn ونظّم تقديماتك من مساحتك المهنية.
         </p>
         <div className="ds-hero-actions">
           <button className="primary large" onClick={onStart}>

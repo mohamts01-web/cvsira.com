@@ -1,6 +1,7 @@
 node_modules*
 dist/
 dist-netlify-review/
+dist-marketing-check/
 *.log
 *.zip
 .env
