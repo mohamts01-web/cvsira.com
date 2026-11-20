@@ -5,10 +5,11 @@ import { api, waitJob } from "./api";
 import { pdfFilename } from "../shared/presentation.mjs";
 import type { Draft } from "./types";
 import type { Vacancy } from "./JobTarget";
+import { confirmedApplicationEmail } from "../shared/application-recipient.mjs";
 
 const gmailClient = import.meta.env.VITE_GMAIL_CLIENT_ID;
 export function ApplicationDelivery({ letter, vacancy, owner, drafts }: { letter: string; vacancy: Vacancy; owner?: string; drafts: Draft[] }) {
-  const [recipient, setRecipient] = useState("");
+  const recipient = confirmedApplicationEmail(vacancy)??"";
   const recipientReady = recipient.trim().length <= 254 && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(recipient.trim());
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState<{ file: File; url: string }>();
@@ -59,6 +60,7 @@ export function ApplicationDelivery({ letter, vacancy, owner, drafts }: { letter
     setStatus("أُرفقت نسخة PDF المعتمدة.");
   }
   async function compose(draft: boolean) {
+    if(!confirmedApplicationEmail(vacancy))throw Error("لا يتوفر بريد تقديم مؤكّد لهذا الإعلان.");
     if (!file || file.size > 5 * 1024 * 1024) throw Error("اختر ملف السيرة PDF بحجم أقصاه 5 ميغابايت.");
     const [heading, ...lines] = letter.trim().split(/\r?\n/);
     return applicationEmail({ recipient: recipient.trim(), subject: heading.replace(/^(?:الموضوع|Subject)\s*:\s*/i, ""),
@@ -95,11 +97,12 @@ export function ApplicationDelivery({ letter, vacancy, owner, drafts }: { letter
     await track();
   }
   const readyToDeliver = Boolean(file && recipientReady && letter.trim());
+  if(!recipient)return null;
   return <section className="application-delivery" aria-label="التقديم بالبريد">
     <div className="application-delivery-fields">
     <h3>المستلم والمرفق</h3>
     <label className="field"><span>بريد جهة التوظيف كما ورد في الإعلان</span>
-      <input type="email" dir="ltr" maxLength={254} value={recipient} disabled={busy} onChange={e => setRecipient(e.target.value)} /></label>
+      <input type="email" dir="ltr" maxLength={254} value={recipient} readOnly /></label>
     {approved.length > 0 && <>
       <label className="field"><span>اختر سيرة معتمدة من حسابك</span>
         <select value={attachmentId} disabled={busy} onChange={e => setAttachmentId(e.target.value)}>

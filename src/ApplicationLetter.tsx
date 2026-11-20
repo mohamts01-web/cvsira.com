@@ -2,6 +2,7 @@ import { ApplicationDelivery } from "./ApplicationDelivery";
 import { useEffect, useRef, useState } from "react";
 import type { Draft } from "./types";
 import type { Vacancy } from "./JobTarget";
+import { confirmedApplicationEmail } from "../shared/application-recipient.mjs";
 
 export default function ApplicationLetter({ vacancy, owner, drafts }: { vacancy: Vacancy; owner?: string; drafts: Draft[] }) {
   const details = useRef<HTMLDetailsElement>(null);
@@ -18,6 +19,7 @@ export default function ApplicationLetter({ vacancy, owner, drafts }: { vacancy:
   const [letter, setLetter] = useState("");
   const [status, setStatus] = useState("");
 
+  if(!confirmedApplicationEmail(vacancy))return null;
   return <details className="interview-practice" id="application-letter" ref={details}>
     <summary>جهّز رسالة التقديم</summary>
     <p>اكتب مثالًا حقيقيًا يوضح صلتك بالوظيفة، مثل مهمة نفذتها أو مشروع أنجزته.</p>

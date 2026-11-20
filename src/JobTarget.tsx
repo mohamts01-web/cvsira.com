@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { captureCvEvent, cvAnalyticsAllowed } from "./analytics";
 import type { Resume } from "./types";
+import { Building2, MapPin, GraduationCap, BriefcaseBusiness, ArrowUpLeft } from "lucide-react";
 import { vacancyEvidence } from "../shared/vacancy-evidence.mjs";
 
 const jobsOrigin = "https://jobs.cvsira.com";
@@ -19,6 +20,9 @@ export type Vacancy = {
   experience: string | null;
   description: string;
   aggregate: boolean;
+  applicationMethod?: string;
+  applicationEmail?: string;
+  applicationEmailConfirmed?: boolean;
 };
 
 export async function fetchVacancy(id: number, signal: AbortSignal): Promise<Vacancy> {
@@ -108,6 +112,14 @@ export function JobTargetCard({ target, compact = false, resume }: {
     </section>
   );
   const evidence = resume ? vacancyEvidence(resume, job) : [];
+  if(!compact)return <section className="job-target-card opportunity-details">
+    <div className="opportunity-labels"><span className="eyebrow">إلمام وظائف · إعلان #{job.id}</span><span className="opportunity-status">متاح في مكتبة الوظائف</span></div>
+    <div className="opportunity-title"><span className="opportunity-company-icon" aria-hidden="true"><Building2 size={29}/></span><div>{job.company&&<p dir="auto">{job.company}</p>}<h1 dir="auto">{job.title}</h1></div></div>
+    <dl className="opportunity-facts">{[["الموقع",job.location,MapPin],["المؤهل",job.aggregate?null:job.qualification,GraduationCap],["الخبرة",job.aggregate?null:job.experience,BriefcaseBusiness]].map(([label,value,Icon])=>typeof value==="string"&&value.trim()&&value.length<200?<div key={String(label)}><dt>{typeof Icon!=="string"&&Icon&&<Icon size={17} aria-hidden="true"/>}{String(label)}</dt><dd dir="auto">{value}</dd></div>:null)}</dl>
+    {job.aggregate&&<p className="opportunity-notice">إعلان يضم عدة مسميات؛ راجع متطلبات كل مسمّى قبل تخصيص سيرتك.</p>}
+    {job.description&&<details className="opportunity-description" open><summary>عن الفرصة ومتطلباتها</summary><div dir="auto">{job.description}</div></details>}
+    <a className="opportunity-source" href={`${jobsOrigin}/j/${job.id}`} target="_blank" rel="noreferrer">راجع الإعلان وطريقة التقديم<ArrowUpLeft size={17}/></a>
+  </section>;
   return (
     <section className="job-target-card">
       <span className="eyebrow">إلمام وظائف · إعلان #{job.id}</span>

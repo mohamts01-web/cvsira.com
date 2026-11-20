@@ -20,6 +20,7 @@ import "./design-system/tools.css";
 import "./design-system/brand.css";
 import "./anchor/home-marquees.css";
 import "./job-library.css";
+import "./opportunity.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
 

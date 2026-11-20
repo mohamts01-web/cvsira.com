@@ -77,6 +77,7 @@ import ApplicationTracker from "./ApplicationTracker";
 import ApplicationLetter from "./ApplicationLetter";
 
 import type { Vacancy } from "./JobTarget";
+import { confirmedApplicationEmail } from "../shared/application-recipient.mjs";
 import ResumeDiagnosis from "./ResumeDiagnosis";
 import ImportReport, { type Report } from "./ImportReport";
 import { pdfFilename, resumeChanges } from "../shared/presentation.mjs";
@@ -881,12 +882,13 @@ export default function App() {
       {path.startsWith("/for-job/") && (
         <main className="container job-target-landing">
           <a className="text-btn" href="/jobs">← العودة لتصفّح الوظائف</a>
+          <div className="opportunity-grid">
           <JobTargetCard target={targetJob} />
           <section className="job-resume-step" aria-labelledby="job-resume-title">
             <div className="job-journey-heading">
               <FileText size={22} aria-hidden="true" />
               <div>
-                <h2 id="job-resume-title">جهّز السيرة</h2>
+                <span className="ds-eyebrow">خطوتك الأولى</span><h2 id="job-resume-title">سيرة تناسب هالفرصة.</h2>
                 <p>{targetJob.job ? "ابدأ بسيرة جديدة أو اختر مسودة لتخصيص نسخة لهذا الإعلان." : "أدخل بياناتك وشاهد معاينة سيرتك."}</p>
               </div>
             </div>
@@ -902,17 +904,18 @@ export default function App() {
             </div>
             <p className="job-plan-note">ابدأ وعاين مجانًا. التحسين بالذكاء الاصطناعي وتنزيل PDF ضمن الباقة.</p>
           </section>
+          </div>
           {targetJob.job && (
             <section className="job-next-step" aria-labelledby="job-next-title">
               <div className="job-journey-heading">
                 <BriefcaseBusiness size={22} aria-hidden="true" />
                 <div>
                   <h2 id="job-next-title">استعد للتقديم</h2>
-                  <p>جهّز رسالتك، وسجّل حالة التقديم، وتدرّب على أسئلة المقابلة لهذا الدور.</p>
+                  <p>احفظ الفرصة وتابع تقديمك، أو ابدأ التدريب للمقابلة.</p>
                 </div>
               </div>
               <div className="job-next-tools">
-                <ApplicationLetter key={`application-letter:${session?.user.id ?? "guest"}:${targetJob.job.id}`} owner={session?.user.id} vacancy={targetJob.job} drafts={drafts} />
+                {confirmedApplicationEmail(targetJob.job)?<ApplicationLetter key={`application-letter:${session?.user.id ?? "guest"}:${targetJob.job.id}`} owner={session?.user.id} vacancy={targetJob.job} drafts={drafts} />:<div className="opportunity-email-note" id="application-letter"><Send size={22} aria-hidden="true"/><div><h3>راجع طريقة التقديم في الإعلان</h3><p>لا يتوفر بريد استقبال مؤكّد لهذه الفرصة، لذلك إنشاء رسالة التقديم والإرسال بالبريد غير متاحين.</p><a href={`https://jobs.cvsira.com/j/${targetJob.job.id}`} target="_blank" rel="noreferrer">عرض طريقة التقديم ↗</a></div></div>}
                 <ApplicationTracker key={`job-tracker:${session?.user.id ?? "guest"}:${targetJob.job.id}`} job={targetJob.job} owner={session?.user.id ?? "guest"} />
                 <InterviewPractice drafts={paid ? drafts : []} key={`interview:${session?.user.id ?? "guest"}:${targetJob.job.id}`} vacancy={targetJob.job} owner={session?.user.id ?? "guest"} />
               </div>
@@ -1421,12 +1424,12 @@ export default function App() {
           {draft?.design.targetVacancy && !readonly && (
             <div className="guest-banner editor-job-next">
               <span>سيرتك مخصصة لـ <strong>{draft.design.targetVacancy.title}</strong></span>
-              <a href={"/for-job/" + draft.design.targetVacancy.id + "#application-letter"} onClick={(event) => {
+              <a href={"/for-job/" + draft.design.targetVacancy.id + (confirmedApplicationEmail(targetJob.job)?"#application-letter":"")} onClick={(event) => {
                 if (dirty) {
                   event.preventDefault();
-                  setError("احفظ تعديلاتك قبل الانتقال إلى رسالة التقديم.");
+                  setError("احفظ تعديلاتك قبل الانتقال إلى تفاصيل الفرصة.");
                 }
-              }}>جهّز رسالة التقديم <ArrowLeft size={15} aria-hidden="true" /></a>
+              }}>{confirmedApplicationEmail(targetJob.job)?"جهّز رسالة التقديم":"راجع الفرصة وطريقة التقديم"} <ArrowLeft size={15} aria-hidden="true" /></a>
             </div>
           )}
           {conflict && (
