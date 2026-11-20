@@ -1,4 +1,5 @@
 import PreviewNotice from "./anchor/PreviewNotice";
+import CreditDesignPreview from "./CreditDesignPreview";
 import { homeDescription, homeTitle } from "../shared/services.mjs";
 import { assistantSections, type AssistantAction, type AssistantSection } from "./assistant-actions";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -916,6 +917,7 @@ export default function App() {
 
       {path === "/plans" && (
         <main className="container plans-page">
+          {import.meta.env.VITE_PRICING_PREVIEW === "true" ? <CreditDesignPreview/> : <>
           <header className="plan-heading">
             <nav className="plan-chapter" aria-label="مسار التنقل"><a href="/documents">مساحتي</a> / الباقة والرصيد</nav>
             <h1>اختر باقتك المهنية</h1>
@@ -925,6 +927,7 @@ export default function App() {
             onSignIn={() => setModal("login")} onPaid={refresh}
             onContinue={continueAfterPayment}
             referralJobId={/^[1-9]\d{0,11}$/.test(explicitJob) ? Number(explicitJob) : targetJob.job?.id} />
+          </>}
           <section className="zid-telegram-info">
             <h2>أكمل سيرتك من تيليجرام</h2>
             <p>اربط حسابك بالبوت لتفتح المسودة نفسها وتستخدم رصيدك من الموقع أو تيليجرام.</p>
