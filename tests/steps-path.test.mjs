@@ -29,7 +29,7 @@ test("step range is safe for empty, single, invalid and out-of-bounds values",()
 test("component renders Arabic controls, a correctly clamped slider and one exposed active card",()=>{
  const html=renderToStaticMarkup(React.createElement(StepsPath,{steps,defaultStep:99,theme:"light"}));
  assert.ok(html.includes('dir="rtl"'));assert.ok(html.includes('aria-valuenow="3"'));assert.ok(html.includes('aria-valuemax="3"'));
- for(const text of ["الخطوة السابقة","خطوة الرحلة","من البداية","تشغيل عرض الخطوات"])assert.ok(html.includes(text),text);
+ for(const text of ["الخطوة السابقة","خطوة الرحلة","من البداية"])assert.ok(html.includes(text),text);
  assert.equal((html.match(/aria-roledescription="بطاقة خطوة"/g)||[]).length,3);
  assert.doesNotMatch(html,/data-theme="burgundy"|Step [0-9]|How it works/);
  assert.equal(renderToStaticMarkup(React.createElement(StepsPath,{steps:[]})),"");

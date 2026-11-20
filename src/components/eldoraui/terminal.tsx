@@ -110,7 +110,6 @@ const Terminal = ({
         <LocalHost title={hostBarTitle} message={hostMessage} />
       )}
 
-      <button type="button" className="text-btn eldora-replay" onClick={()=>setCounter(window.matchMedia("(prefers-reduced-motion: reduce)").matches?finalCount:0)}>إعادة العرض</button>
       <pre className="bg-card w-full min-w-0 overflow-hidden rounded-xl border text-[11px] shadow-lg  sm:text-[12px]  md:text-[13px]">
         <div className="bg-muted flex flex-row items-center gap-2 border-b px-3 py-2 sm:px-4">
           <MacControls />

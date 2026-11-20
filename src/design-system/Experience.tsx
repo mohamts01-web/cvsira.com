@@ -6,8 +6,6 @@ import {
   BriefcaseBusiness,
   ArrowLeft,
   Check,
-  Pause,
-  Play,
 } from "lucide-react";
 import { MagicCard } from "../components/magicui/magic-card";
 import { BlurFade } from "../components/magicui/blur-fade";
@@ -60,7 +58,7 @@ export function CareerFlow({ compact = false }: { compact?: boolean }) {
     job = useRef<HTMLDivElement>(null);
   const visible = useInView(container),
     reduced = useReducedMotion();
-  const [paused, setPaused] = useState(false);
+
   const [pageVisible, setPageVisible] = useState(true);
   useEffect(() => {
     const update = () => setPageVisible(document.visibilityState !== "hidden");
@@ -68,7 +66,7 @@ export function CareerFlow({ compact = false }: { compact?: boolean }) {
     document.addEventListener("visibilitychange", update);
     return () => document.removeEventListener("visibilitychange", update);
   }, []);
-  const active = visible && pageVisible && !reduced && !paused;
+  const active = visible && pageVisible && !reduced;
   return (
     <div className={"ds-flow " + (compact ? "compact" : "")} ref={container}>
       <DotPattern width={24} height={24} className="ds-dots" />
@@ -110,15 +108,7 @@ export function CareerFlow({ compact = false }: { compact?: boolean }) {
         </>
       )}
       <p>من خبرتك إلى سيرة تناسب الفرصة.</p>
-      {!reduced && (
-        <button
-          className="ds-motion-toggle"
-          onClick={() => setPaused(!paused)}
-          aria-label={paused ? "تشغيل حركة المشهد" : "إيقاف حركة المشهد"}
-        >
-          {paused ? <Play size={14} /> : <Pause size={14} />}
-        </button>
-      )}
+
     </div>
   );
 }

@@ -35,7 +35,7 @@ test("liquid login preserves the existing form as content and uses deterministic
   assert.ok(html.includes('src="/assets/logo-symbol.svg"'));
   assert.ok(html.includes('type="email"'));
   assert.ok(html.includes('type="submit"'));
-  assert.ok(html.includes('aria-label="إيقاف حركة الخلفية"'));
+  assert.doesNotMatch(html, /إيقاف حركة الخلفية|تشغيل حركة الخلفية/);
   assert.ok(html.includes('aria-hidden="true"'));
   assert.doesNotMatch(html, /Math.random|NEURAL|User Identity|Sequence Key/);
   assert.equal((html.match(/class="liquid-blob"/g) || []).length, 4);

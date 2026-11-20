@@ -12,6 +12,7 @@ import { HowItWorks } from "./how-it-works";
 import { FAQ } from "./faq";
 import { PolicyLinks } from "../LegalPage";
 import { services } from "../../shared/services.mjs";
+import HomeMarquees from "./HomeMarquees";
 const templates = [
   { id: "classic", name: "الأساسي", desc: "ترتيب واضح يضع خبرتك أولًا." },
   { id: "modern", name: "الحديث", desc: "مساحة متوازنة وشخصية مهنية." },
@@ -32,20 +33,7 @@ export default function AnchorHome({
   return (
     <main className="anchor-home">
       <MagicHero onStart={onStart} onTry={() => onTry()} />
-      <section className="anchor-output-strip" aria-label="مساحتك مترابطة">
-        {[
-          ["سيرة ذاتية", "PDF / Word"],
-          ["لغتان", "العربية / English"],
-          ["اقتراحات ذكية", "بقرارك أنت"],
-          ["الموقع والبوت", "حساب واحد"],
-        ].map(([a, b]) => (
-          <div key={a}>
-            <span className="anchor-status-dot" />
-            <strong>{a}</strong>
-            <small>{b}</small>
-          </div>
-        ))}
-      </section>
+      <HomeMarquees />
       <section className="ds-home-services anchor-section">
         <div className="anchor-section-heading">
           <div>

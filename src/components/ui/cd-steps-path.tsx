@@ -1,6 +1,6 @@
 import * as React from "react";
 import {animate,motion,useInView,useMotionValue,useMotionValueEvent,useReducedMotion,useSpring,useTransform,type MotionValue} from "framer-motion";
-import {ArrowLeft,ArrowRight,Check,Moon,Pause,Play,RotateCcw,Sun} from "lucide-react";
+import {ArrowLeft,ArrowRight,Check,Moon,RotateCcw,Sun} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {clampStep,pathX,pathWave,stepAtX} from "./steps-path-geometry";
 
@@ -41,8 +41,9 @@ export function StepsPath({steps,title="رحلتك في إلمام CV",defaultSt
  const [dark,setDark]=useDark(theme);
  const n=steps.length,last=Math.max(1,n-1),box=React.useRef<HTMLDivElement>(null);
  const inView=useInView(box,{amount:.3});
- const [width,setWidth]=React.useState(520),[step,setStep]=React.useState(()=>clampStep(defaultStep,n)),[burst,setBurst]=React.useState(0),[playing,setPlaying]=React.useState(autoPlay&&!reduce);
- const [hovered,setHovered]=React.useState(false),[pageVisible,setPageVisible]=React.useState(true);
+ const [width,setWidth]=React.useState(520),[step,setStep]=React.useState(()=>clampStep(defaultStep,n)),[burst,setBurst]=React.useState(0);
+ const playing=autoPlay&&!reduce;
+ const [pageVisible,setPageVisible]=React.useState(true);
  const stage=React.useRef<HTMLDivElement>(null),[cardHeight,setCardHeight]=React.useState(255);
  const stepRef=React.useRef(step);stepRef.current=step;
  const notifiedStep=React.useRef(step);
@@ -57,7 +58,7 @@ export function StepsPath({steps,title="رحلتك في إلمام CV",defaultSt
  React.useEffect(()=>{animation.current?.stop();pos.set(clampStep(stepRef.current,n));setStep(clampStep(stepRef.current,n))},[n,pos]);
  React.useEffect(()=>{const el=stage.current;if(!el)return;const cards=[...el.querySelectorAll<HTMLElement>(".sp-card")];const resize=()=>setCardHeight(Math.max(230,...cards.map(card=>card.offsetHeight))+12);const observer=new ResizeObserver(resize);cards.forEach(card=>observer.observe(card));resize();return()=>observer.disconnect()},[steps,width]);
  React.useEffect(()=>{const change=()=>setPageVisible(!document.hidden);change();document.addEventListener("visibilitychange",change);return()=>document.removeEventListener("visibilitychange",change)},[]);
- React.useEffect(()=>{if(reduce){animation.current?.stop();epoch.current++;pos.set(clampStep(stepRef.current,n));setPlaying(false)}},[reduce,n,pos]);
+ React.useEffect(()=>{if(reduce){animation.current?.stop();epoch.current++;pos.set(clampStep(stepRef.current,n));}},[reduce,n,pos]);
  useMotionValueEvent(pos,"change",value=>{if(!drag.current)return;const rounded=clampStep(value,n);stepRef.current=rounded;setStep(previous=>previous===rounded?previous:rounded)});
  const route=React.useMemo(()=>Array.from({length:90},(_,i)=>{const t=i/89;return (i?"L":"M")+pathX(t,width,rtl).toFixed(1)+" "+pathWave(t).toFixed(1)}).join(" "),[width,rtl]);
  const filled=useTransform(()=>{const t=Math.max(0,Math.min(1,sp.get()/lastValue.get())),count=Math.max(2,Math.round(t*90));return Array.from({length:count},(_,i)=>{const at=i/(count-1)*t;return (i?"L":"M")+pathX(at,widthValue.get(),!!rtlValue.get()).toFixed(1)+" "+pathWave(at).toFixed(1)}).join(" ")});
@@ -69,8 +70,8 @@ export function StepsPath({steps,title="رحلتك في إلمام CV",defaultSt
   const run=animate(pos,next,{type:"spring",stiffness:160,damping:17,velocity});animation.current=run;
   run.then(()=>{if(mounted.current&&current===epoch.current)setBurst(value=>value+1)});
  },[n,onChange,pos,reduce]);
- React.useEffect(()=>{if(!playing||reduce||n<2||!inView||!pageVisible||hovered)return;const timer=window.setInterval(()=>{if(!drag.current)settle(stepRef.current>=n-1?0:stepRef.current+1)},Math.max(1500,autoPlayInterval));return()=>clearInterval(timer)},[playing,reduce,n,inView,pageVisible,hovered,autoPlayInterval,settle]);
- const begin=(kind:"knob"|"card")=>(event:React.PointerEvent)=>{if(event.pointerType==="mouse"&&event.button!==0)return;setPlaying(false);animation.current?.stop();pos.stop();if(kind==="knob")event.currentTarget.setPointerCapture(event.pointerId);drag.current={v:0,t:performance.now(),p:pos.get(),kind,x:event.clientX,y:event.clientY,locked:kind==="knob"}};
+ React.useEffect(()=>{if(!playing||reduce||n<2||!inView||!pageVisible)return;const timer=window.setInterval(()=>{if(!drag.current)settle(stepRef.current>=n-1?0:stepRef.current+1)},Math.max(1500,autoPlayInterval));return()=>clearInterval(timer)},[playing,reduce,n,inView,pageVisible,autoPlayInterval,settle]);
+ const begin=(kind:"knob"|"card")=>(event:React.PointerEvent)=>{if(event.pointerType==="mouse"&&event.button!==0)return;animation.current?.stop();pos.stop();if(kind==="knob")event.currentTarget.setPointerCapture(event.pointerId);drag.current={v:0,t:performance.now(),p:pos.get(),kind,x:event.clientX,y:event.clientY,locked:kind==="knob"}};
  const move=(event:React.PointerEvent)=>{
   const state=drag.current;if(!state)return;
   const dx=event.clientX-state.x,dy=event.clientY-state.y;
@@ -79,27 +80,26 @@ export function StepsPath({steps,title="رحلتك في إلمام CV",defaultSt
   const now=performance.now();state.v=(next-pos.get())/Math.max(1,now-state.t)*1000;state.t=now;pos.set(Math.max(-.2,Math.min(n-.8,next)));
  };
  const end=()=>{const state=drag.current;drag.current=null;if(state)settle(Math.round(pos.get()+state.v*.1),state.v)};
- const keyboard=(event:React.KeyboardEvent)=>{const current=stepRef.current;const map:Record<string,number>={ArrowRight:current+(rtl?-1:1),ArrowLeft:current+(rtl?1:-1),ArrowUp:current+1,ArrowDown:current-1,Home:0,End:n-1};if(event.key in map){event.preventDefault();setPlaying(false);settle(map[event.key])}};
+ const keyboard=(event:React.KeyboardEvent)=>{const current=stepRef.current;const map:Record<string,number>={ArrowRight:current+(rtl?-1:1),ArrowLeft:current+(rtl?1:-1),ArrowUp:current+1,ArrowDown:current-1,Home:0,End:n-1};if(event.key in map){event.preventDefault();settle(map[event.key])}};
  const cw=Math.max(120,Math.min(300,width-60)),isLast=step===n-1;
  const button="sp-icon-button grid size-11 shrink-0 place-items-center rounded-full border border-border bg-card transition-colors hover:bg-muted disabled:opacity-35";
  if(!n)return null;
  return <div data-component="steps-path" dir={dir} className={cn(dark&&"dark","w-full max-w-xl steps-path",className)} style={{"--sp-gold":accentColor} as React.CSSProperties}>
-  <section aria-roledescription="عرض خطوات تفاعلي" aria-label={title} className="relative w-full overflow-hidden rounded-3xl border border-border bg-background p-5 pb-6 text-foreground" onPointerEnter={()=>setHovered(true)} onPointerLeave={()=>setHovered(false)} onFocusCapture={event=>{if(!(event.target as HTMLElement).closest("[data-step-play]"))setPlaying(false)}}>
+  <section aria-roledescription="عرض خطوات تفاعلي" aria-label={title} className="relative w-full overflow-hidden rounded-3xl border border-border bg-background p-5 pb-6 text-foreground">
    <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{background:"radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, "+ACCENT+" 16%, transparent), transparent),radial-gradient(50% 40% at 100% 100%, color-mix(in oklab,var(--primary) 12%,transparent),transparent)"}}/>
    <div className="relative flex items-center justify-between gap-3"><div><h2 className="sp-title text-lg font-semibold">{title}</h2><p className="sp-counter text-sm tabular-nums text-muted-foreground" aria-live={playing?"off":"polite"} aria-atomic="true">الخطوة {number(step+1)} من {number(n)}: {steps[step]?.title}{playing?" · عرض تلقائي":""}</p></div><div className="flex shrink-0 items-center gap-2">
-    <button type="button" data-step-play aria-pressed={playing} aria-label={playing?"إيقاف عرض الخطوات":"تشغيل عرض الخطوات"} disabled={reduce||n<2} onClick={()=>setPlaying(value=>!value)} className={button}>{playing?<Pause className="size-4" aria-hidden="true"/>:<Play className="size-4" aria-hidden="true"/>}</button>
     <button type="button" aria-label={dark?"تفعيل الوضع الفاتح للموقع":"تفعيل الوضع الداكن للموقع"} onClick={()=>onThemeChange?onThemeChange():setDark(value=>!value)} className={button}>{dark?<Sun className="size-4" aria-hidden="true"/>:<Moon className="size-4" aria-hidden="true"/>}</button>
    </div></div>
    <div ref={box} className="relative mt-3 touch-none select-none" style={{height:PH}}>
     <svg width={width} height={PH} className="absolute inset-0 overflow-visible" aria-hidden="true"><defs><linearGradient id={gradientId} x1={rtl?"1":"0"} x2={rtl?"0":"1"}><stop offset="0" stopColor="var(--primary)"/><stop offset="1" stopColor={ACCENT}/></linearGradient></defs><path d={route} fill="none" strokeWidth="6" strokeLinecap="round" strokeDasharray="1 11" className="stroke-border"/><motion.path d={filled} fill="none" strokeWidth="6" strokeLinecap="round" stroke={"url(#"+gradientId+")"} style={{filter:"drop-shadow(0 0 6px color-mix(in oklab,var(--primary) 45%,transparent))"}}/></svg>
-    {steps.map((s,i)=>{const t=i/last;return <button key={s.id} type="button" aria-current={i===step?"step":undefined} aria-label={"انتقل إلى الخطوة "+number(i+1)+": "+s.title} onClick={()=>{setPlaying(false);settle(i)}} className="sp-icon-button absolute grid size-11 place-items-center rounded-full" style={{left:pathX(t,width,rtl)-22,top:pathWave(t)-22}}><motion.span className={cn("grid size-7 place-items-center rounded-full border-2 text-xs font-bold",i<=step?"border-primary bg-primary text-primary-foreground":"border-border bg-card text-muted-foreground")} animate={{scale:reduce?1:i===step?1.15:1}} transition={reduce?{duration:0}:{type:"spring",stiffness:400,damping:16}}>{i<step?<Check className="size-3.5" aria-hidden="true"/>:number(i+1)}</motion.span></button>})}
+    {steps.map((s,i)=>{const t=i/last;return <button key={s.id} type="button" aria-current={i===step?"step":undefined} aria-label={"انتقل إلى الخطوة "+number(i+1)+": "+s.title} onClick={()=>{settle(i)}} className="sp-icon-button absolute grid size-11 place-items-center rounded-full" style={{left:pathX(t,width,rtl)-22,top:pathWave(t)-22}}><motion.span className={cn("grid size-7 place-items-center rounded-full border-2 text-xs font-bold",i<=step?"border-primary bg-primary text-primary-foreground":"border-border bg-card text-muted-foreground")} animate={{scale:reduce?1:i===step?1.15:1}} transition={reduce?{duration:0}:{type:"spring",stiffness:400,damping:16}}>{i<step?<Check className="size-3.5" aria-hidden="true"/>:number(i+1)}</motion.span></button>})}
     <motion.div className="absolute left-0 top-0 size-11" style={{x:knobX,y:knobY}}>
      {burst>0&&!reduce&&<span key={burst} aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2">{Array.from({length:10},(_,k)=>{const angle=k/10*Math.PI*2;return <motion.span key={k} className="absolute -ml-[3px] -mt-[3px] block size-1.5 rounded-full" style={{background:k%2?ACCENT:"var(--primary)"}} initial={{x:0,y:0,opacity:1,scale:1}} animate={{x:Math.cos(angle)*34,y:Math.sin(angle)*34,opacity:0,scale:.2}} transition={{duration:.7,ease:"easeOut"}}/>})}</span>}
      <div role="slider" tabIndex={0} aria-label="خطوة الرحلة" aria-orientation="horizontal" aria-valuemin={1} aria-valuemax={n} aria-valuenow={step+1} aria-valuetext={"الخطوة "+number(step+1)+": "+steps[step]?.title} onKeyDown={keyboard} onPointerDown={begin("knob")} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} className="sp-slider grid size-11 cursor-grab place-items-center rounded-full active:cursor-grabbing"><motion.span className="block size-7 rounded-full border-[3px] border-card" style={{background:"linear-gradient(135deg,"+ACCENT+",var(--primary))",boxShadow:"0 0 0 2px var(--primary),0 8px 18px -4px color-mix(in oklab,var(--primary) 60%,transparent)"}} whileTap={reduce?undefined:{scale:1.2}}/></div>
     </motion.div>
    </div>
    <div ref={stage} onPointerDown={begin("card")} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} className="relative mt-2 touch-pan-y cursor-grab select-none active:cursor-grabbing" style={{height:cardHeight,perspective:1000}}><ul className="relative h-full">{steps.map((s,i)=><StepCard key={s.id} s={s} i={i} pos={pos} w={cw} reduce={reduce} active={i===step} total={n} rtl={rtl}/>)}</ul></div>
-   <div className="relative mt-3 flex items-center justify-between gap-3"><button type="button" className={button} aria-label="الخطوة السابقة" disabled={step===0} onClick={()=>{setPlaying(false);settle(step-1)}}>{rtl?<ArrowRight className="size-4" aria-hidden="true"/>:<ArrowLeft className="size-4" aria-hidden="true"/>}</button><p className="sp-hint text-center text-xs text-muted-foreground">اسحب المؤشر أو البطاقات، أو استخدم الأسهم.</p><button type="button" onClick={()=>{setPlaying(false);settle(isLast?0:step+1)}} className="sp-next flex h-11 shrink-0 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground">{isLast?<>من البداية<RotateCcw className="size-4" aria-hidden="true"/></>:<>التالي{rtl?<ArrowLeft className="size-4" aria-hidden="true"/>:<ArrowRight className="size-4" aria-hidden="true"/>}</>}</button></div>
+   <div className="relative mt-3 flex items-center justify-between gap-3"><button type="button" className={button} aria-label="الخطوة السابقة" disabled={step===0} onClick={()=>{settle(step-1)}}>{rtl?<ArrowRight className="size-4" aria-hidden="true"/>:<ArrowLeft className="size-4" aria-hidden="true"/>}</button><p className="sp-hint text-center text-xs text-muted-foreground">اسحب المؤشر أو البطاقات، أو استخدم الأسهم.</p><button type="button" onClick={()=>{settle(isLast?0:step+1)}} className="sp-next flex h-11 shrink-0 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground">{isLast?<>من البداية<RotateCcw className="size-4" aria-hidden="true"/></>:<>التالي{rtl?<ArrowLeft className="size-4" aria-hidden="true"/>:<ArrowRight className="size-4" aria-hidden="true"/>}</>}</button></div>
   </section>
  </div>;
 }

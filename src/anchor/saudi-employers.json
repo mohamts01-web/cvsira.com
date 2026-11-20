@@ -1,0 +1,90 @@
+[
+  {
+    "name": "معادن",
+    "src": "/assets/saudi-employers/maaden.svg"
+  },
+  {
+    "name": "أرامكو السعودية",
+    "src": "/assets/saudi-employers/aramco.svg"
+  },
+  {
+    "name": "stc",
+    "src": "/assets/saudi-employers/stc.svg"
+  },
+  {
+    "name": "أكاديمية طويق",
+    "src": "/assets/saudi-employers/tuwaiq.svg"
+  },
+  {
+    "name": "البنك الأهلي التجاري",
+    "src": "/assets/saudi-employers/alahli.svg"
+  },
+  {
+    "name": "ساب",
+    "src": "/assets/saudi-employers/sab.svg"
+  },
+  {
+    "name": "البنك العربي الوطني",
+    "src": "/assets/saudi-employers/anb.svg"
+  },
+  {
+    "name": "سار",
+    "src": "/assets/saudi-employers/sar.svg"
+  },
+  {
+    "name": "الخطوط السعودية",
+    "src": "/assets/saudi-employers/saudia.svg"
+  },
+  {
+    "name": "القدية",
+    "src": "/assets/saudi-employers/qiddiya.svg"
+  },
+  {
+    "name": "سدايا",
+    "src": "/assets/saudi-employers/sdaia.svg"
+  },
+  {
+    "name": "بنك الرياض",
+    "src": "/assets/saudi-employers/riyad.svg"
+  },
+  {
+    "name": "ثمانية",
+    "src": "/assets/saudi-employers/thmanyah.svg"
+  },
+  {
+    "name": "سير",
+    "src": "/assets/saudi-employers/ceer.svg"
+  },
+  {
+    "name": "سامي",
+    "src": "/assets/saudi-employers/sami.svg"
+  },
+  {
+    "name": "صندوق الاستثمارات العامة",
+    "src": "/assets/saudi-employers/pif.svg"
+  },
+  {
+    "name": "كلية الملك خالد العسكرية",
+    "src": "/assets/saudi-employers/king-khalid.svg"
+  },
+  {
+    "name": "مصرف الراجحي",
+    "src": "/assets/saudi-employers/alrajhi.svg"
+  },
+  {
+    "name": "نيوم",
+    "src": "/assets/saudi-employers/neom.svg"
+  },
+  {
+    "name": "وزارة الحرس الوطني",
+    "src": "/assets/saudi-employers/national-guard.svg"
+  },
+  {
+    "name": "وزارة الدفاع",
+    "src": "/assets/saudi-employers/defense.svg"
+  },
+  {
+    "name": "D360",
+    "src": "/assets/saudi-employers/d360.svg"
+  }
+]
