@@ -13,6 +13,16 @@ body {
   font-size: 16px;
   line-height: 1.75;
 }
+/* Keep the document as the scroll container for the sticky app header.
+   overflow-x:hidden made body an extra scroll container, releasing the header. */
+html {
+  overflow-x: clip;
+  overflow-y: auto;
+}
+body {
+  overflow-x: clip;
+  overflow-y: visible;
+}
 button,
 input,
 select,
