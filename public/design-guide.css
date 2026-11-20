@@ -1,0 +1,81 @@
+/* Shared reading treatment for server-generated guides. */
+@font-face {
+  font-family: Tajawal;
+  src: url("/fonts/tajawal-arabic-400-normal.woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Tajawal;
+  src: url("/fonts/tajawal-arabic-700-normal.woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+html {
+  font:
+    16px/1.85 Tajawal,
+    Arial,
+    sans-serif;
+}
+body {
+  background: var(--ui-page);
+  color: var(--ui-text);
+}
+header {
+  max-width: 1000px;
+  align-items: center;
+  padding: 18px 24px;
+  margin-bottom: 32px;
+}
+main {
+  max-width: 900px;
+  box-sizing: border-box;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 20px;
+  box-shadow: none;
+}
+h1 {
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.4;
+}
+h2 {
+  font-size: 24px;
+  line-height: 1.5;
+}
+p {
+  color: var(--ui-muted);
+}
+section {
+  border-color: var(--ui-border);
+}
+a {
+  color: var(--ui-accent-text);
+  text-underline-offset: 4px;
+}
+.action,
+header button {
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+}
+main nav a {
+  padding: 10px 14px;
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+}
+:is(a, button):focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  main {
+    margin: 0 16px 32px;
+    padding: 24px;
+  }
+  header {
+    padding: 16px;
+    gap: 14px;
+  }
+}

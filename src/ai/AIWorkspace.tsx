@@ -1,23 +1,192 @@
-import {useEffect,useRef,useState} from "react";
-import {ArrowUp,Paperclip,Sparkles,FileText,Languages,Check,Loader2} from "lucide-react";
-import type {Draft} from "../types";
-// Same golden-angle sphere as Ai-1, drawn on one canvas rather than 800 separate meshes.
-function ParticleOrb(){
- const canvas=useRef<HTMLCanvasElement>(null);
- useEffect(()=>{const el=canvas.current;if(!el)return;const ctx=el.getContext("2d");if(!ctx)return;let frame=0,visible=true;const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;const points=Array.from({length:500},(_,i)=>{const y=1-i/499*2,r=Math.sqrt(1-y*y),theta=Math.PI*(3-Math.sqrt(5))*i;return [Math.cos(theta)*r,y,Math.sin(theta)*r]});
- const draw=(time:number)=>{ctx.clearRect(0,0,280,280);const a=reduced?0:time*.00012,c=Math.cos(a),s=Math.sin(a);const projected=points.map(([x,y,z])=>{const px=x*c+z*s,pz=-x*s+z*c;return [140+px*100,140+y*100,pz]}).sort((a,b)=>a[2]-b[2]);for(const[x,y,z]of projected){ctx.fillStyle="rgba(95,211,185,"+(.2+(z+1)*.35)+")";ctx.beginPath();ctx.arc(x,y,1.2+(z+1)*.55,0,Math.PI*2);ctx.fill()}if(!reduced&&visible)frame=requestAnimationFrame(draw)};
- const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;cancelAnimationFrame(frame);if(visible)frame=requestAnimationFrame(draw)});observer.observe(el);return()=>{observer.disconnect();cancelAnimationFrame(frame)}},[]);
- return <div className="ai-orb" aria-hidden="true"><canvas width="280" height="280" ref={canvas}/><span/></div>
-}
-export function AIWorkspace({drafts,selected,busy,remaining,chat,hasProposal,onSelect,onRun,onImport,onReview}:{drafts:Draft[];selected?:string;busy:boolean;remaining:number;chat:{role:string;text:string}[];hasProposal:boolean;onSelect:(id:string)=>void;onRun:(kind:"chat"|"improve"|"translate",extra:Record<string,unknown>)=>void;onImport:()=>void;onReview:()=>void}){
- const [message,setMessage]=useState("");const end=useRef<HTMLDivElement>(null);
- useEffect(()=>{if(chat.length||hasProposal)end.current?.scrollIntoView({block:"nearest",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"})},[chat.length,hasProposal,busy]);
- const blocked=busy||!selected;
- return <section className="ai-workspace" aria-label="مساعد إلمام"><div className="ai-shader" aria-hidden="true"/><header className="ai-workspace-bar"><span><Sparkles size={18}/>مساعد إلمام</span><span className="ai-credit"><span className="anchor-status-dot"/>{remaining} عملية متبقية</span></header><div className="ai-workspace-content">
- <label className="ai-draft-select">السيرة التي نعمل عليها<select value={selected??""} disabled={busy} onChange={e=>onSelect(e.target.value)}><option value="" disabled>اختر مسودة</option>{drafts.map(d=><option key={d.id} value={d.id}>{d.title}</option>)}</select></label>
- {!chat.length?<div className="ai-welcome"><ParticleOrb/><span className="anchor-eyebrow">فكرة أوضح. خطوة أقرب.</span><h1>وش نطوّر في سيرتك اليوم؟</h1><p>اختر مسودتك واسأل. كل اقتراح تراجعه قبل اعتماده.</p><div className="ai-quick-actions"><button disabled={blocked} onClick={()=>onRun("improve",{})}><Sparkles size={18}/>حسّن الصياغة</button><button disabled={blocked} onClick={()=>onRun("translate",{targetLanguage:drafts.find(d=>d.id===selected)?.content.language==="ar"?"en":"ar"})}><Languages size={18}/>ترجم السيرة</button><button disabled={busy} onClick={onImport}><FileText size={18}/>استورد سيرة</button></div></div>:<div className="ai-messages" aria-live="polite" aria-busy={busy}>{chat.map((m,i)=><article key={i} className={"ai-message "+m.role}><small>{m.role==="user"?"أنت":"مساعد إلمام"}</small><p dir="auto">{m.text}</p></article>)}</div>}
- {busy&&<p className="ai-progress" role="status"><Loader2 size={18} className="spin"/>أجهّز اقتراحك للمراجعة…</p>}
- {hasProposal&&<div className="ai-result-ready" role="status"><Check size={21}/><div><strong>اقتراحك جاهز.</strong><p>شاهد ما تغيّر ثم قرّر ما يناسبك.</p></div><button className="primary" onClick={onReview}>راجع التغييرات</button></div>}<div ref={end}/></div>
- <form className="ai-composer" onSubmit={e=>{e.preventDefault();if(message.trim()&&!blocked){onRun("chat",{message:message.trim()});setMessage("")}}}><label htmlFor="ai-message">رسالتك للمساعد</label><textarea id="ai-message" value={message} onChange={e=>setMessage(e.target.value)} disabled={busy} placeholder="مثلًا: كيف أبرز خبرتي لهذا المسمى؟" rows={3}/><div><button type="button" className="text-btn" disabled={busy} onClick={onImport}><Paperclip size={19}/>إرفاق سيرة</button><small>عملية واحدة عند نجاح الطلب</small><button className="primary ai-send" type="submit" aria-label="إرسال للمساعد" disabled={blocked||!message.trim()}><ArrowUp size={21}/></button></div></form>
- {!drafts.length&&<p className="ai-empty-note">ابدأ <a href="/start">سيرة جديدة</a> أو استورد ملفك ليعمل المساعد على معلوماتك.</p>}</section>
+import { CareerFlow } from "../design-system/Experience";
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowUp,
+  Paperclip,
+  Sparkles,
+  FileText,
+  Languages,
+  Check,
+  Loader2,
+} from "lucide-react";
+import type { Draft } from "../types";
+export function AIWorkspace({
+  drafts,
+  selected,
+  busy,
+  remaining,
+  chat,
+  hasProposal,
+  onSelect,
+  onRun,
+  onImport,
+  onReview,
+}: {
+  drafts: Draft[];
+  selected?: string;
+  busy: boolean;
+  remaining: number;
+  chat: { role: string; text: string }[];
+  hasProposal: boolean;
+  onSelect: (id: string) => void;
+  onRun: (
+    kind: "chat" | "improve" | "translate",
+    extra: Record<string, unknown>,
+  ) => void;
+  onImport: () => void;
+  onReview: () => void;
+}) {
+  const [message, setMessage] = useState("");
+  const end = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (chat.length || hasProposal)
+      end.current?.scrollIntoView({
+        block: "nearest",
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+  }, [chat.length, hasProposal, busy]);
+  const blocked = busy || !selected;
+  return (
+    <section className="ai-workspace" aria-label="مساعد إلمام">
+      <div className="ai-shader" aria-hidden="true" />
+      <header className="ai-workspace-bar">
+        <span>
+          <Sparkles size={18} />
+          مساعد إلمام
+        </span>
+        <span className="ai-credit">
+          <span className="anchor-status-dot" />
+          {remaining} عملية متبقية
+        </span>
+      </header>
+      <div className="ai-workspace-content">
+        <label className="ai-draft-select">
+          السيرة التي نعمل عليها
+          <select
+            value={selected ?? ""}
+            disabled={busy}
+            onChange={(e) => onSelect(e.target.value)}
+          >
+            <option value="" disabled>
+              اختر مسودة
+            </option>
+            {drafts.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {!chat.length ? (
+          <div className="ai-welcome">
+            <CareerFlow compact />
+            <span className="anchor-eyebrow">فكرة أوضح. خطوة أقرب.</span>
+            <h1>وش نطوّر في سيرتك اليوم؟</h1>
+            <p>اختر مسودتك واسأل. كل اقتراح تراجعه قبل اعتماده.</p>
+            <div className="ai-quick-actions">
+              <button disabled={blocked} onClick={() => onRun("improve", {})}>
+                <Sparkles size={18} />
+                حسّن الصياغة
+              </button>
+              <button
+                disabled={blocked}
+                onClick={() =>
+                  onRun("translate", {
+                    targetLanguage:
+                      drafts.find((d) => d.id === selected)?.content
+                        .language === "ar"
+                        ? "en"
+                        : "ar",
+                  })
+                }
+              >
+                <Languages size={18} />
+                ترجم السيرة
+              </button>
+              <button disabled={busy} onClick={onImport}>
+                <FileText size={18} />
+                استورد سيرة
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="ai-messages" aria-live="polite" aria-busy={busy}>
+            {chat.map((m, i) => (
+              <article key={i} className={"ai-message " + m.role}>
+                <small>{m.role === "user" ? "أنت" : "مساعد إلمام"}</small>
+                <p dir="auto">{m.text}</p>
+              </article>
+            ))}
+          </div>
+        )}
+        {busy && (
+          <p className="ai-progress" role="status">
+            <Loader2 size={18} className="spin" />
+            أجهّز اقتراحك للمراجعة…
+          </p>
+        )}
+        {hasProposal && (
+          <div className="ai-result-ready" role="status">
+            <Check size={21} />
+            <div>
+              <strong>اقتراحك جاهز.</strong>
+              <p>شاهد ما تغيّر ثم قرّر ما يناسبك.</p>
+            </div>
+            <button className="primary" onClick={onReview}>
+              راجع التغييرات
+            </button>
+          </div>
+        )}
+        <div ref={end} />
+      </div>
+      <form
+        className="ai-composer"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (message.trim() && !blocked) {
+            onRun("chat", { message: message.trim() });
+            setMessage("");
+          }
+        }}
+      >
+        <label htmlFor="ai-message">رسالتك للمساعد</label>
+        <textarea
+          id="ai-message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          disabled={busy}
+          placeholder="مثلًا: كيف أبرز خبرتي لهذا المسمى؟"
+          rows={3}
+        />
+        <div>
+          <button
+            type="button"
+            className="text-btn"
+            disabled={busy}
+            onClick={onImport}
+          >
+            <Paperclip size={19} />
+            إرفاق سيرة
+          </button>
+          <small>عملية واحدة عند نجاح الطلب</small>
+          <button
+            className="primary ai-send"
+            type="submit"
+            aria-label="إرسال للمساعد"
+            disabled={blocked || !message.trim()}
+          >
+            <ArrowUp size={21} />
+          </button>
+        </div>
+      </form>
+      {!drafts.length && (
+        <p className="ai-empty-note">
+          ابدأ <a href="/start">سيرة جديدة</a> أو استورد ملفك ليعمل المساعد على
+          معلوماتك.
+        </p>
+      )}
+    </section>
+  );
 }

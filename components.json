@@ -19,6 +19,7 @@
   },
   "iconLibrary": "lucide",
   "registries": {
-    "@eldoraui": "https://www.eldoraui.site/r/{name}.json"
+    "@eldoraui": "https://www.eldoraui.site/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}.json"
   }
 }

@@ -69,7 +69,7 @@ for (const page of pages) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${page.title} | ${site}</title><meta name="description" content="${page.description}">
 <link rel="canonical" href="${origin}/${page.slug}/"><link rel="stylesheet" href="/search-guide.css"><link rel="stylesheet" href="/theme.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;900&amp;display=swap">
+<link rel="stylesheet" href="/design-guide.css">
 <meta property="og:title" content="${page.title} | ${site}"><meta property="og:description" content="${page.description}">
 <meta property="og:url" content="${origin}/${page.slug}/"></head>
 <body><header><a href="/" aria-label="إلمام CV"><img src="/elmam-brand.svg" alt="إلمام" width="210" height="101"></a><a href="/plans">الباقة</a><button type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح">الوضع الفاتح</button></header>

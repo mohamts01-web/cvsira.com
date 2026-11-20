@@ -15,6 +15,8 @@ import "./components/eldoraui/shiny-button.css";
 import "./components/eldoraui/product-components.css";
 import "./anchor/steps-path.css";
 import "./anchor/workspace.css";
+import "./design-system/system.css";
+import "./design-system/tools.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
 

@@ -41,10 +41,10 @@ test("navigation keeps the original logo and all account service destinations", 
 test("Anchor foreground pairs remain readable on dark surfaces", () => {
  for(const [fg,bg] of [["#eeedf1","#111014"],["#aaa5b3","#111014"],["#10211e","#72d5bc"],["#d0ead5","#213d2b"]]) assert.ok(contrast(fg,bg)>=4.5,fg+" on "+bg);
 });
-test("all app routes load one Anchor design and the AI view keeps review before application", () => {
- const main=source("src/main.tsx"); assert.ok(main.includes("anchor-source.css")); assert.ok(main.includes("anchor-theme.css")); assert.ok(main.includes("anchor-surfaces.css"));
+test("app routes load the product system and AI keeps review before application", () => {
+ const main=source("src/main.tsx"); assert.ok(main.includes("design-system/system.css"));
  assert.doesNotMatch(main,/identity.css|home.css|visual-refresh.css|BrandMotion/);
  const css=source("src/anchor/anchor-theme.css");assert.ok(css.includes("prefers-reduced-motion:reduce"));assert.ok(css.includes("focus-visible"));
- const ai=source("src/ai/AIWorkspace.tsx"); for(const text of ["اختر مسودة","راجع التغييرات","عملية واحدة عند نجاح الطلب","onRun","onReview","cancelAnimationFrame"])assert.ok(ai.includes(text));
- assert.ok(source("src/anchor/hero-section.tsx").includes("prefers-reduced-motion"));
+ const ai=source("src/ai/AIWorkspace.tsx"); for(const text of ["اختر مسودة","راجع التغييرات","عملية واحدة عند نجاح الطلب","onRun","onReview","CareerFlow"])assert.ok(ai.includes(text));
+ assert.ok(source("src/design-system/Experience.tsx").includes("useReducedMotion"));
 });

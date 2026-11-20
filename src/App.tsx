@@ -1,3 +1,4 @@
+import PreviewNotice from "./anchor/PreviewNotice";
 import { assistantSections, type AssistantAction, type AssistantSection } from "./assistant-actions";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -68,7 +69,7 @@ import { WorkspaceNav, ServiceGrid, WorkspaceHeading, careerTools } from "./anch
 import { AIWorkspace } from "./ai/AIWorkspace";
 
 import InterviewPractice, { InterviewLibrary } from "./InterviewPractice";
-import WorkspaceActivity from "./WorkspaceActivity";
+import FinancialDashboard from "./anchor/FinancialDashboard";
 import ApplicationTracker from "./ApplicationTracker";
 import ApplicationLetter from "./ApplicationLetter";
 
@@ -918,8 +919,8 @@ export default function App() {
       )}
       {path === "/documents" && (
         <main className="container documents-page">
-          {import.meta.env.VITE_PRICING_PREVIEW === "true" && <p className="preview-notice">هذه معاينة. تُحفظ المسودات التجريبية في هذا المتصفح.</p>}
-          <div className="page-heading">
+          {import.meta.env.VITE_PRICING_PREVIEW === "true" && <PreviewNotice/>}
+          {(!session || location.hash === "#resume-drafts") && <div className="page-heading">
             <div>
               <h1>{location.hash === "#resume-drafts" ? "مكتبة السير" : "مساحتي المهنية"}</h1>
               <p className="muted">{location.hash === "#resume-drafts" ? "افتح مسودة لتحريرها أو أنشئ نسخة لفرصة جديدة." : "أكمل آخر سيرة عملت عليها، أو انتقل إلى خطوتك التالية."}</p>
@@ -949,6 +950,7 @@ export default function App() {
               </button>
             </div>
           </div>
+          }
           {!session ? (
             <div className="empty">
               <UserRound size={36} />
@@ -960,39 +962,7 @@ export default function App() {
             </div>
           ) : (
             <>
-              {location.hash !== "#resume-drafts" && <>
-              {recentDraft && <section className="workspace-resume" aria-label="آخر مسودة">
-                <div><div className="workspace-resume-label"><FileText size={16} aria-hidden="true" /> أكمل من حيث توقفت</div>
-                <h2>{recentDraft.title}</h2><p>آخر تعديل {fmt(recentDraft.updated_at)}</p></div>
-                <button type="button" className="primary" onClick={() => go("/editor/" + recentDraft.id)}>{paid ? "أكمل تحرير السيرة" : "افتح السيرة"} <ArrowLeft size={17} aria-hidden="true" /></button>
-              </section>}
-
-              <section className="career-overview" aria-label="ملخص مساحتك المهنية">
-                <article><FileText size={24} aria-hidden="true" /><strong>{drafts.length.toLocaleString("ar-SA")}</strong><span>سير في مكتبتك</span></article>
-                <article><BriefcaseBusiness size={24} aria-hidden="true" /><strong>{drafts.filter(isTailoredDraft).length.toLocaleString("ar-SA")}</strong><span>نسخ مخصصة للفرص</span></article>
-                <article><Sparkles size={24} aria-hidden="true" /><strong>{(account?.membership?.aiRemaining ?? 0).toLocaleString("ar-SA")}</strong><span>عمليات تحسين متبقية</span></article>
-              </section>
-              <div className="membership-strip">
-                <span>
-                  {account?.membership
-                    ? paid
-                      ? "باقتك فعّالة حتى " + fmt(account.membership.expires)
-                      : "انتهت مدة التحرير"
-                    : "لم تُفعّل الباقة بعد"}
-                </span>
-                <span>
-                  {account?.membership?.aiRemaining ?? 0} عملية متبقية
-                </span>
-                <button
-                  className="text-btn"
-                  onClick={() => setModal("membership")}
-                >
-                  باقتي والربط <ArrowLeft size={15} />
-                </button>
-              </div>
-              <ServiceGrid />
-              <WorkspaceActivity key={session.user.id} />
-              </>}
+              {location.hash !== "#resume-drafts" ? <FinancialDashboard drafts={drafts} account={account ?? null} paid={paid} onOpen={id=>go("/editor/"+id)} onStart={()=>start()} onImport={()=>{if(requirePaid()) fileRef.current?.click()}} onAccount={()=>setModal("membership")}/> : <>
               <div className="library-heading" id="resume-drafts"><div><h2>مسوداتي</h2></div><span>{drafts.length.toLocaleString("ar-SA")} مسودة</span></div>
               {targetJob.job && <p>لتخصيص سيرة لوظيفة <strong>{targetJob.job.title}</strong>، اختر «خصّص لهذه الوظيفة» من المسودة المناسبة.</p>}
               <div className="draft-library-filter" role="group" aria-label="تصفية المسودات">
@@ -1039,13 +1009,14 @@ export default function App() {
                   </button>
                 )}
               </div>
+              </>}
             </>
           )}
           {!session && <ServiceGrid />}
         </main>
       )}
 
-      {path === "/assistant" && <main className="container career-tool-page">
+      {path === "/assistant" && <main className="container career-tool-page assistant-page">
         <AIWorkspace drafts={drafts} selected={draft?.id} busy={busy || aiRunning}
           remaining={account?.membership?.aiRemaining ?? 0} chat={chat}
           hasProposal={job?.state === "completed" && !!job.result?.content}

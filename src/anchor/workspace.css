@@ -28,6 +28,40 @@
 .career-tool-page .discover-jobs form,.career-tool-page .tracker-form,.policy-content {padding:clamp(16px,3vw,32px);border:1px solid var(--ui-border);border-radius:18px;background:var(--ui-surface)}
 .policy-content {max-width:78ch;margin-inline:auto;line-height:1.95}
 .documents-page #resume-drafts {scroll-margin-block-start:100px}
+body:has(.anchor-sidebar) #root>main.assistant-page{padding:20px 24px;min-height:0;height:calc(100dvh - 80px)}
+.assistant-page .ai-workspace{min-height:0;height:100%;overflow:hidden}
+.assistant-page .ai-workspace-content{overflow-y:auto;overscroll-behavior:contain}
+.assistant-page .ai-welcome{padding:16px 0}
+.assistant-page .ai-orb{width:160px;height:160px;margin-inline:auto}
+.assistant-page .ai-orb canvas{width:160px;height:160px}
+.assistant-page .ai-composer{flex:none}
+@media(max-width:767px){body:has(.anchor-sidebar) #root>main.assistant-page{padding:12px;height:auto;min-height:calc(100dvh - 190px)}.assistant-page .ai-workspace{min-height:calc(100dvh - 200px);height:auto}.assistant-page .ai-workspace-content{max-height:65dvh}}
+.preview-toast{position:fixed;z-index:80;bottom:24px;inset-inline-end:24px;max-width:min(420px,calc(100vw - 32px));display:flex;align-items:start;gap:12px;padding:18px;border:1px solid var(--ui-border);border-radius:16px;background:var(--ui-surface);box-shadow:0 12px 45px color-mix(in srgb,var(--ui-shadow) 20%,transparent);color:var(--ui-text)}
+.preview-toast>svg{color:var(--ui-accent-text);flex:none;margin-top:4px}.preview-toast strong{font-size:.9rem}.preview-toast p{font-size:.8rem;color:var(--ui-muted);margin:6px 0 0}.preview-toast button{flex:none}
+.anchor-sidebar{top:80px;height:calc(100dvh - 80px);bottom:auto;overflow:hidden;padding:24px 16px 16px;background:var(--ui-surface);border-color:var(--ui-border);box-sizing:border-box}
+.anchor-sidebar>.anchor-eyebrow{padding:0 12px 18px;flex:none}
+.anchor-sidebar>nav{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:0 4px 12px}
+.anchor-sidebar nav a{flex-shrink:0;border:1px solid transparent;transition:background .18s,color .18s}
+.anchor-sidebar nav a[aria-current]{border-color:var(--ui-border);box-shadow:0 2px 6px color-mix(in srgb,var(--ui-shadow),transparent 95%)}
+.anchor-sidebar .anchor-sidebar-note{flex:none;margin:12px 0 0;border-top:1px solid var(--ui-border);padding:10px 12px 0}
+.anchor-sidebar-note>.anchor-status-dot{display:none}
+.fin-tools>div{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fin-tools>div>a{padding:22px;gap:10px}
+.fin-tools a p{font-size:.85rem;color:var(--ui-muted);line-height:1.8;margin:0}
+.fin-tools a small{display:flex;align-items:center;gap:8px;color:var(--ui-accent-text);margin-top:auto;padding-top:6px}
+body:has(.anchor-sidebar) .assistant-page{padding:24px;min-height:calc(100dvh - 80px);display:flex;flex-direction:column}
+.assistant-page .ai-workspace{flex:1;width:100%;max-width:none;min-height:calc(100dvh - 128px);display:flex;flex-direction:column;border-radius:18px;box-shadow:0 12px 30px -24px var(--ui-shadow)}
+.assistant-page .ai-workspace-content{flex:1;min-height:0;max-height:none;overflow:visible}
+.assistant-page .ai-welcome{padding:22px 0;min-height:0}
+.assistant-page .ai-composer{margin:16px 24px 24px}
+.assistant-page .ai-draft-select{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--ui-border)}
+.assistant-page .ai-draft-select select{min-width:min(320px,100%);min-height:44px;padding:8px 12px}
+.career-tool-page .service-mast,.documents-page .page-heading{background:var(--ui-surface);border-radius:16px;box-shadow:0 12px 30px -24px var(--ui-shadow)}
+.career-tool-page .service-mast::before,.documents-page .page-heading::before{display:none}
+.career-tool-page .service-emblem{box-shadow:none;transform:translateY(-50%);border-radius:14px;border-color:var(--ui-border)}
+.career-tool-page .interview-practice,.career-tool-page .discover-suggestions,.career-tool-page .tracker-form,.career-tool-page .linkedin-library,.career-tool-page .linkedin-kit,.documents-page .draft-card{box-shadow:0 12px 30px -24px var(--ui-shadow)}
+@media(max-width:1100px){.fin-tools>div{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){.anchor-sidebar{display:none}body:has(.anchor-sidebar) .assistant-page{padding:14px}.assistant-page .ai-workspace{min-height:calc(100dvh - 190px)}.preview-toast{bottom:140px;inset-inline:16px;max-width:none}.assistant-page .ai-composer{margin:12px}.fin-tools>div{grid-template-columns:1fr}.assistant-page .ai-draft-select select{width:100%}}
 .documents-page .page-heading {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:28px}
 .documents-page .page-heading h1 {font-size:clamp(28px,3.1vw,44px);text-wrap:balance;line-height:1.4}
 .documents-page .document-entry-actions {display:flex;gap:10px;max-width:460px}
@@ -102,3 +136,10 @@
 .wizard .status-step,.wizard .wizard-body {padding:clamp(16px,3vw,36px);border:1px solid var(--ui-border);border-radius:22px;background:radial-gradient(ellipse at 0 0,var(--ui-accent-soft),transparent 48%),var(--ui-surface)}
 @media(max-width:950px){.service-directory{grid-template-columns:1fr}.documents-page .page-heading{align-items:start;flex-direction:column;gap:16px}}
 @media(max-width:600px){.service-mast{padding:20px;padding-block-end:24px}.service-mast h1{padding-inline-end:64px}.service-emblem{width:44px;top:62px;inset-inline-end:19px}.service-mast p{margin-block-start:12px}.documents-page .page-heading h1{margin:0}.service-directory>a{gap:12px}}
+/* Final assistant viewport rules take precedence over shared workspace sizing. */
+body:has(.anchor-sidebar) #root>main.assistant-page{padding:20px 24px;min-height:0;height:calc(100dvh - 80px)}
+body #root .assistant-page .ai-workspace{min-height:0;height:100%;overflow:hidden}
+body #root .assistant-page .ai-workspace-content{overflow-y:auto;overscroll-behavior:contain;max-height:none}
+body #root .assistant-page .ai-welcome{padding:16px 0}
+body #root .assistant-page .ai-orb,body #root .assistant-page .ai-orb canvas{width:160px;height:160px}
+@media(max-width:767px){body:has(.anchor-sidebar) #root>main.assistant-page{padding:12px;height:auto;min-height:calc(100dvh - 190px)}body #root .assistant-page .ai-workspace{min-height:calc(100dvh - 200px);height:auto}body #root .assistant-page .ai-workspace-content{max-height:65dvh}}
