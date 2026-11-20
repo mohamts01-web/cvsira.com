@@ -32,7 +32,7 @@ test("liquid login preserves the existing form as content and uses deterministic
   const render = () => renderToStaticMarkup(React.createElement(NeuralAccessLogin, null, React.createElement("form", null, React.createElement("input", { type: "email", name: "email", autoComplete: "email" }), React.createElement(FancyButton, { type: "submit" }, "أرسل رمز الدخول"))));
   const html = render();
   assert.equal(html, render());
-  assert.ok(html.includes('src="/elmam-brand.svg"'));
+  assert.ok(html.includes('src="/assets/logo-symbol.svg"'));
   assert.ok(html.includes('type="email"'));
   assert.ok(html.includes('type="submit"'));
   assert.ok(html.includes('aria-label="إيقاف حركة الخلفية"'));
@@ -58,3 +58,4 @@ test("Tailwind and shadcn configuration preserve existing styles and scope liqui
   assert.equal(settings.aliases.ui, "@/components/ui");
   assert.equal(settings.rsc, false);
 });
+

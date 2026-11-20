@@ -22,14 +22,14 @@ export function applyTheme(theme: Theme) {
   document.documentElement.style.colorScheme = theme;
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute("content", theme === "dark" ? "#000000" : "#ffffff");
+    ?.setAttribute("content", theme === "dark" ? "#0B1F4B" : "#F6F9FC");
 }
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() =>
     typeof document !== "undefined" &&
-    document.documentElement.dataset.theme === "light"
-      ? "light"
-      : "dark",
+    document.documentElement.dataset.theme === "dark"
+      ? "dark"
+      : "light",
   );
   useEffect(() => {
     applyTheme(theme);
@@ -42,7 +42,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const sync = (e: StorageEvent) => {
       if (e.key === THEME_KEY)
-        setTheme(e.newValue === "light" ? "light" : "dark");
+        setTheme(e.newValue === "dark" ? "dark" : "light");
     };
     addEventListener("storage", sync);
     return () => removeEventListener("storage", sync);

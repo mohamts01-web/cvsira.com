@@ -69,10 +69,10 @@ for (const page of pages) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${page.title} | ${site}</title><meta name="description" content="${page.description}">
 <link rel="canonical" href="${origin}/${page.slug}/"><link rel="stylesheet" href="/search-guide.css"><link rel="stylesheet" href="/theme.css">
-<link rel="stylesheet" href="/design-guide.css">
+<link rel="stylesheet" href="/design-guide.css"><link rel="stylesheet" href="/fonts/brand/fonts.css"><link rel="stylesheet" href="/brand-global.css"><link rel="icon" href="/favicon.svg">
 <meta property="og:title" content="${page.title} | ${site}"><meta property="og:description" content="${page.description}">
 <meta property="og:url" content="${origin}/${page.slug}/"></head>
-<body><header><a href="/" aria-label="إلمام CV"><img src="/elmam-brand.svg" alt="إلمام" width="210" height="101"></a><a href="/plans">الباقة</a><button type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح">الوضع الفاتح</button></header>
+<body><header><a href="/" aria-label="إلمام CV"><img class="brand-footer-light" src="/elmam-brand.svg" alt="إلمام" width="210" height="101"><img class="brand-footer-dark" src="/assets/logo-dark-bg.svg" alt="إلمام" width="210" height="101"></a><a href="/plans">الباقة</a><button type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح">الوضع الفاتح</button></header>
 <main><p>أدلة السيرة الذاتية</p><h1>${page.title}</h1><p>${page.description}</p>
 ${page.sections.map(([heading, copy]) => `<section><h2>${heading}</h2><p>${copy}</p></section>`).join("\n")}
 <a class="action" href="${page.action?.[0] ?? "/start"}">${page.action?.[1] ?? "أنشئ سيرتك الذاتية"} ←</a>

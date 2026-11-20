@@ -66,7 +66,7 @@ export function NumberTicker({
       ref={ref}
       aria-label={value.toLocaleString("ar-SA")}
       className={cn(
-        "inline-block tracking-wider text-black tabular-nums dark:text-white",
+        "inline-block tracking-wider text-[var(--ui-text)] tabular-nums",
         className
       )}
       {...props}

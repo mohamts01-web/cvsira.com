@@ -17,9 +17,11 @@ import "./anchor/steps-path.css";
 import "./anchor/workspace.css";
 import "./design-system/system.css";
 import "./design-system/tools.css";
+import "./design-system/brand.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
 
     <ThemeProvider><App /></ThemeProvider>
   </React.StrictMode>,
 );
+

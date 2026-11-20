@@ -1,0 +1,108 @@
+/* ==========================================================
+   Elmam | إلمام — Brand design tokens
+   Source of truth for colors, type, radius, buttons, cards.
+   Import once in your entry file:  import './styles/brand.css'
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+/* If you own the licensed font 29LT Bukra, put the files in /public/fonts/
+   and uncomment. It then takes priority over IBM Plex Sans Arabic.
+@font-face { font-family: '29LT Bukra'; font-weight: 400; font-display: swap;
+  src: url('/fonts/29LTBukra-Regular.woff2') format('woff2'); }
+@font-face { font-family: '29LT Bukra'; font-weight: 700; font-display: swap;
+  src: url('/fonts/29LTBukra-Bold.woff2') format('woff2'); }
+*/
+
+:root {
+  /* ---- Brand colors (use ONLY these) ---- */
+  --navy:   #0B1F4B;  /* كحلي عميق  — text, dark sections */
+  --blue:   #1F5BFF;  /* أزرق ذكي   — primary action / links */
+  --violet: #7A5CFF;  /* بنفسجي حديث — accents, gradient end */
+  --teal:   #00C2A8;  /* تركوازي حيوي — highlight, success, gradient start */
+  --mint:   #E6F7F4;  /* أزرق فاتح  — soft backgrounds, soft buttons */
+
+  /* ---- Neutrals ---- */
+  --surface: #F6F9FC; /* page background (as in the brand board) */
+  --white:   #FFFFFF;
+  --navy-70: rgba(11, 31, 75, .70);  /* secondary text */
+  --navy-12: rgba(11, 31, 75, .12);  /* hairlines / borders */
+
+  /* ---- Gradient: decorative only (hero wash, top bar). Never on body text. ---- */
+  --gradient-brand: linear-gradient(135deg, #00C2A8 0%, #1F5BFF 55%, #7A5CFF 100%);
+
+  /* ---- Typography ---- */
+  --font-ar: '29LT Bukra', 'IBM Plex Sans Arabic', 'Tajawal', system-ui, sans-serif;
+  --font-en: 'Manrope', system-ui, sans-serif;
+  --font-body: var(--font-ar), var(--font-en);
+  --lh-heading: 1.2;
+  --lh-body: 1.7;
+
+  /* ---- Shape ---- */
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 4px 24px rgba(11, 31, 75, .06);
+
+  /* ---- Layout ---- */
+  --container: 1120px;
+  --space-section: clamp(56px, 8vw, 112px);
+}
+
+html { direction: rtl; }
+html[lang='en'] { direction: ltr; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--navy);
+  font-family: var(--font-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+/* English runs inside Arabic pages use Manrope */
+:lang(en) { font-family: var(--font-en), var(--font-ar), sans-serif; }
+
+h1, h2, h3, h4 { line-height: var(--lh-heading); font-weight: 700; color: var(--navy); margin: 0 0 .5em; }
+h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+a  { color: var(--blue); }
+
+.container { width: min(100% - 32px, var(--container)); margin-inline: auto; }
+.section   { padding-block: var(--space-section); }
+.section--dark { background: var(--navy); color: var(--white); }
+.section--dark h1, .section--dark h2, .section--dark h3 { color: var(--white); }
+.section--soft { background: var(--mint); }
+.bg-brand-gradient { background: var(--gradient-brand); } /* decorative only */
+
+/* ---- Buttons: always fully-rounded pills, icon beside text ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+  padding: .85rem 1.6rem; min-height: 48px;
+  border-radius: var(--radius-pill); border: 2px solid transparent;
+  font: 600 1rem/1 var(--font-body); text-decoration: none; cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.btn:hover  { transform: translateY(-1px); }
+.btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.btn svg { width: 20px; height: 20px; stroke-width: 2; flex: none; }
+[dir='rtl'] .btn svg.dir-aware { transform: scaleX(-1); } /* mirror arrows in RTL */
+
+.btn--primary   { background: var(--navy); color: var(--white); }           /* main CTA (dark) */
+.btn--action    { background: var(--blue); color: var(--white); }           /* main CTA (bright) */
+.btn--secondary { background: var(--white); color: var(--navy); border-color: var(--navy); }
+.btn--soft      { background: var(--mint); color: var(--navy); }
+.btn--on-dark   { background: var(--white); color: var(--navy); }
+
+/* ---- Cards ---- */
+.card {
+  background: var(--white); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card); padding: 24px;
+}
+
+/* ---- Tag / chip ---- */
+.chip { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .8rem;
+  border-radius: var(--radius-pill); background: var(--mint); color: var(--navy); font-size: .875rem; }
+
+/* ---- Logo safety: never stretch ---- */
+.logo { display: block; height: 40px; width: auto; }
+.logo--hero { height: auto; width: min(100%, 420px); }

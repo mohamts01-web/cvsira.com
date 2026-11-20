@@ -1,24 +1,102 @@
 {
   "name": "Elmam CV",
-  "version": "1.0-proposal",
-  "status": "phase-2-specification",
+  "version": "2.0-brand-approved",
+  "status": "implemented",
   "direction": "rtl",
-  "font": {"family": "Tajawal", "weights": [400, 700], "hosting": "local"},
-  "spacing": [4, 8, 12, 16, 24, 32, 48, 64, 96],
-  "radius": {"control": 12, "card": 20, "scene": 24},
-  "layout": {"header": 72, "mobileHeader": 64, "sidebar": 248, "marketingMax": 1280, "mobileBreakpoint": 768, "compactBreakpoint": 1024},
-  "interaction": {"targetMin": 44, "inputHeight": 48, "focusWidth": 2, "focusOffset": 3},
-  "motion": {"feedbackMs": 140, "disclosureMs": 220, "entranceMs": 420, "numberMs": 600, "themeMs": 400, "maxEntranceTranslate": 12, "reducedMotion": "final-state"},
+  "font": {
+    "family": "IBM Plex Sans Arabic",
+    "english": "Manrope",
+    "weights": [
+      400,
+      500,
+      600,
+      700
+    ],
+    "hosting": "local",
+    "licensedAlternative": "29LT Bukra when font files are provided"
+  },
+  "spacing": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64,
+    96
+  ],
+  "radius": {
+    "control": 999,
+    "card": 20,
+    "scene": 24
+  },
+  "layout": {
+    "header": 72,
+    "mobileHeader": 64,
+    "sidebar": 248,
+    "marketingMax": 1280,
+    "mobileBreakpoint": 768,
+    "compactBreakpoint": 1024
+  },
+  "interaction": {
+    "targetMin": 44,
+    "inputHeight": 48,
+    "focusWidth": 2,
+    "focusOffset": 3
+  },
+  "motion": {
+    "feedbackMs": 140,
+    "disclosureMs": 220,
+    "entranceMs": 420,
+    "numberMs": 600,
+    "themeMs": 400,
+    "maxEntranceTranslate": 12,
+    "reducedMotion": "final-state"
+  },
   "light": {
-    "page": "#FFFFFF", "surface": "#F8FAF9", "surfaceSecondary": "#EEF3F0",
-    "text": "#111D16", "textSecondary": "#4D5D54", "border": "#CED9D2",
-    "controlBorder": "#6D8174", "action": "#08734E", "onAction": "#FFFFFF", "selected": "#E3F4EA", "danger": "#A51F2B"
+    "page": "#F6F9FC",
+    "surface": "#FFFFFF",
+    "surfaceSecondary": "#E6F7F4",
+    "text": "#0B1F4B",
+    "textSecondary": "#52607B",
+    "border": "#D8DFEA",
+    "controlBorder": "#697A98",
+    "action": "#1F5BFF",
+    "onAction": "#FFFFFF",
+    "selected": "#E6F7F4",
+    "danger": "#A51F2B"
   },
   "dark": {
-    "page": "#000000", "surface": "#0C0C0C", "surfaceSecondary": "#141414",
-    "text": "#F3F5F4", "textSecondary": "#B3B9B6", "border": "#303632",
-    "controlBorder": "#66736B", "action": "#77DFB3", "onAction": "#061B0E", "selected": "#10271C", "danger": "#FF9A9A"
+    "page": "#0B1F4B",
+    "surface": "#102653",
+    "surfaceSecondary": "#172F5A",
+    "text": "#FFFFFF",
+    "textSecondary": "#BECCE1",
+    "border": "#354D75",
+    "controlBorder": "#8298B9",
+    "action": "#1F5BFF",
+    "onAction": "#FFFFFF",
+    "selected": "#172F5A",
+    "danger": "#FFACAC"
   },
-  "verificationViewports": [[390, 844], [768, 1024], [1024, 650], [1440, 900]],
+  "verificationViewports": [
+    [
+      390,
+      844
+    ],
+    [
+      768,
+      1024
+    ],
+    [
+      1024,
+      650
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
   "next": "phase-3-overview-assistant-navigation-prototype"
 }

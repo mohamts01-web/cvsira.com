@@ -283,7 +283,7 @@ export default function AnchorHome({
       </section>
       <footer className="anchor-footer">
         <a href="/" className="anchor-wordmark">
-          إلمام <span>CV</span>
+          <img className="brand-footer-light" src="/elmam-brand.svg" alt="إلمام Elmam"/><img className="brand-footer-dark" src="/assets/logo-dark-bg.svg" alt="إلمام Elmam"/>
         </a>
         <p>مساحتك المهنية. من السيرة إلى الفرصة.</p>
         <PolicyLinks />

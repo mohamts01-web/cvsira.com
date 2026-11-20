@@ -161,7 +161,7 @@ function Brand({ onClick }: { onClick: () => void }) {
   return (
     <button className="brand" aria-label="إلمام CV" onClick={onClick}>
       <img className="elmam-brand-image" src="/elmam-brand.svg" alt="" width="210" height="101" />
-      <span className="brand-en">CV</span>
+      <img className="elmam-brand-dark" src="/assets/logo-dark-bg.svg" alt="" /><span className="brand-en">CV</span>
     </button>
   );
 }
