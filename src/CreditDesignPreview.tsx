@@ -6,6 +6,21 @@ import {PricingTable,creditMoney} from "./components/ui/pricing-table";
 import {LoopsPricingSlider} from "./components/ui/pricing-slider-loops";
 import "./credit-design.css";
 
+const serviceCosts=[
+  ["استخراج بيانات سيرة من ملف ومراجعتها","نقطة"],
+  ["تحسين قسم، مثل الملخص أو الخبرة","٠٫٢ نقطة"],
+  ["تحسين صياغة السيرة كاملة","نقطة"],
+  ["ترجمة السيرة كاملة","نقطة"],
+  ["تخصيص السيرة لوظيفة محددة","نقطة"],
+  ["إعداد أسئلة وتحضير لمقابلة محددة","نقطة"],
+  ["تقييم إجابة مقابلة مكتوبة","٠٫٥ نقطة"],
+  ["إجابة المساعد عن سؤال مهني بسيط","٠٫٢ نقطة"],
+  ["إنشاء رسالة تقديم مخصصة","نقطة"],
+  ["إنشاء محتوى ملف LinkedIn كامل","٣ نقاط"],
+  ["إعادة صياغة قسم من LinkedIn","٠٫٥ نقطة"],
+  ["الإرسال من بريد العميل","نقطة لكل إرسال ناجح لمستلم واحد"],
+];
+
 export default function CreditDesignPreview(){
   const [discount,setDiscount]=useState(false),[selection,setSelection]=useState<{points:number;amountMinor:number}|null>(null);
   const summary=useRef<HTMLDivElement>(null),id=useId(),reduced=useReducedMotion();
@@ -17,6 +32,6 @@ export default function CreditDesignPreview(){
     <PricingTable plans={creditPacks} discount={discount} onSelect={plan=>review(plan.points,plan.amountMinor)}/>
     <div className="credit-selection" ref={summary} tabIndex={-1} hidden={!selection} role="status">{selection&&<><CheckCircle2 size={22} aria-hidden="true"/><div><strong>اختيارك {selection.points.toLocaleString("ar-SA")} نقطة مقابل {creditMoney(selection.amountMinor)} ريال</strong><p>هذا استعراض للتصميم. لم يُنشأ طلب دفع ولم يتغير رصيد حسابك.</p></div><button type="button" className="secondary" onClick={()=>setSelection(null)}>إغلاق</button></>}</div>
     <LoopsPricingSlider discount={discount} onSelect={review}/>
-    <section className="credit-usage" aria-labelledby={id+"-usage"}><span className="ds-eyebrow">قبل ما تبدأ، تعرف التكلفة</span><h2 id={id+"-usage"}>وين تستخدم نقاطك؟</h2><p>تصوّر مقترح لتكلفة الأدوات. يظهر الخصم من الرصيد قبل تنفيذ كل طلب.</p><div className="credit-usage-grid">{[["تخصيص السيرة لوظيفة","٢ نقطة"],["التحضير لمقابلة","٢ نقطة"],["تحسين قسم من السيرة","٠٫٥ نقطة"],["إجابة المساعد المهنية","٠٫٢ نقطة"],["تجهيز محتوى LinkedIn","٣ نقاط"],["إرسال من بريدك","نقطة لكل إرسال ناجح لمستلم واحد"]].map(([label,cost])=><article key={label}><h3>{label}</h3><strong>{cost}</strong></article>)}</div><p>الإرسال المباشر من Gmail ما زال محصورًا بحسابات الاختبار المصرح بها. إنشاء الرسالة أو تخصيص السيرة له تكلفة مستقلة تظهر قبل التنفيذ.</p></section>
+    <section className="credit-usage" aria-labelledby={id+"-usage"}><span className="ds-eyebrow">قبل ما تبدأ، تعرف التكلفة</span><h2 id={id+"-usage"}>وين تستخدم نقاطك؟</h2><p>الخدمات وتكاليفها المقترحة. تظهر التكلفة قبل تنفيذ كل طلب.</p><dl className="credit-service-list">{serviceCosts.map(([label,cost])=><div key={label}><dt>{label}</dt><dd>{cost}</dd></div>)}</dl><p>الإرسال المباشر من Gmail ما زال محصورًا بحسابات الاختبار المصرح بها. إنشاء الرسالة أو تخصيص السيرة له تكلفة مستقلة تظهر قبل التنفيذ.</p></section>
   </div>;
 }
