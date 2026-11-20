@@ -4,8 +4,8 @@ import {ArrowLeft,FileText,Lock,MessageCircle,Pause,Play,RotateCw,Sparkles} from
 import {AnimatedList} from "./animated-list";
 /** Adapted from EldoraUI Browser, Card Flip Hover, Clerk OTP, Integrations and Live Button.
  * Only real product controls are exposed; demonstration-only browser actions and random OTPs are omitted. */
-export function BrowserFrame({children,title="معاينة إلمام CV"}:{children:ReactNode;title?:string}){
- return <div className="eldora-browser"><div className="eldora-browser-bar"><span className="eldora-window-dots" aria-hidden="true"><i/><i/><i/></span><span><Lock size={13} aria-hidden="true"/>{title}</span><span className="eldora-browser-label">ELMAM CV</span></div>{children}</div>
+export function BrowserFrame({children,title="معاينة إلمام"}:{children:ReactNode;title?:string}){
+ return <div className="eldora-browser"><div className="eldora-browser-bar"><span className="eldora-window-dots" aria-hidden="true"><i/><i/><i/></span><span><Lock size={13} aria-hidden="true"/>{title}</span><span className="eldora-browser-label">ELMAM</span></div>{children}</div>
 }
 export function CardFlipHover({front,details,href}:{front:ReactNode;details:string;href:string}){
  const [flipped,setFlipped]=useState(false);

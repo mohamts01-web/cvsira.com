@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 export type PricingPlan = { label: string; description: string; price: string; currency: string; period: string; features: string[] };
 const faqs = [
-  { value: "purchase", question: "هل تتجدد الباقة تلقائيًا؟", answer: "لا. باقة إلمام CV دفعة واحدة للمدة المعروضة، بدون تجديد تلقائي." },
+  { value: "purchase", question: "هل تتجدد الباقة تلقائيًا؟", answer: "لا. باقة إلمام دفعة واحدة للمدة المعروضة، بدون تجديد تلقائي." },
   { value: "free", question: "هل يمكنني تجربة المحرر قبل الشراء؟", answer: "نعم، إدخال البيانات ومعاينة السيرة مجانيان. الحفظ الدائم والذكاء الاصطناعي والتنزيل تحتاج تفعيل الباقة." },
   { value: "ai", question: "هل تنزيل PDF يستهلك رصيدي؟", answer: "لا، تنزيل PDF لا يخصم من رصيد الذكاء الاصطناعي. تستخدم العمليات للتحسين والترجمة والاستيراد." },
   { value: "templates", question: "هل تدعم القوالب العربية والإنجليزية؟", answer: "نعم، تتوفر ثلاثة قوالب تدعم العربية والإنجليزية ويمكنك معاينتها قبل اختيار الشكل المناسب." },

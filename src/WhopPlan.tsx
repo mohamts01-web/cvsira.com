@@ -126,7 +126,7 @@ export default function WhopPlan({ userId, onPaid, onSignIn, onContinue, referra
   const advertisedOffer = offer ?? { amountMinor: 1000, days: 30, drafts: 1, aiOperations: 3 };
   return (
     <Pricing sandbox={sandbox} plan={{
-      label: "باقة إلمام CV",
+      label: "باقة إلمام",
       description: "سيرتك المهنية، محفوظة وقابلة للتحديث طوال مدة الباقة.",
       price: number.format(advertisedOffer.amountMinor / 100),
       currency: advertisedOffer.amountMinor === 1000 ? "ريالات" : "ريالًا",

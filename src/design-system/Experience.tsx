@@ -77,7 +77,7 @@ export function CareerFlow({ compact = false }: { compact?: boolean }) {
         </div>
         <div ref={ai} className="ds-flow-center">
           <Sparkles />
-          <span>إلمام CV</span>
+          <span>إلمام</span>
         </div>
         <div ref={job}>
           <BriefcaseBusiness />
@@ -125,22 +125,23 @@ export function MagicHero({
       <div className="ds-hero-copy">
         <span className="ds-eyebrow">
           <span />
-          مساحتك المهنية، بخطوة أوضح
+          إلمام — مساحتك المهنية
         </span>
         <Reveal>
           <h1>
-            سيرتك واستعدادك
+            فرصتك الجاية،
             <br />
-            <em>للوظيفة، هنا.</em>
+            <em>خلّك جاهز لها.</em>
           </h1>
         </Reveal>
         <p>
-          من أول سيرة إلى الاستعداد للمقابلة. خصّص خبرتك للفرصة، جهّز محتوى
-          LinkedIn ونظّم تقديماتك من مساحتك المهنية.
+          من تدوّر على فرصة، لين تجهّز تقديمك وتستعد لمقابلتك — إلمام معك.
+          اكتشف الوظائف، اضبط سيرتك على متطلباتها، ورتّب خطواتك من مكان واحد،
+          بمساعدة ذكاء اصطناعي يعرف وش تبي تنجز.
         </p>
         <div className="ds-hero-actions">
           <button className="primary large" onClick={onStart}>
-            أنشئ سيرتك الآن
+            ابدأ خطوتك الجاية
             <ArrowLeft size={18} />
           </button>
           <button className="secondary large" onClick={onTry}>

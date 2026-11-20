@@ -81,7 +81,7 @@ export function ConnectedWorkspace() {
       <small><Check size={13} /> محفوظة في حسابك</small>
     </div>
     <div className="connected-flow" aria-hidden="true"><i /><i /><i /></div>
-    <div className="connected-phone"><div className="connected-phone-speaker" /><div className="connected-chat-head"><img src="/elmam-brand.svg" alt="" width="40" height="22" /><span>بوت إلمام CV</span></div>
+    <div className="connected-phone"><div className="connected-phone-speaker" /><div className="connected-chat-head"><img src="/elmam-brand.svg" alt="" width="40" height="22" /><span>بوت إلمام</span></div>
       <div className="connected-bubble">أكمل سيرتك من هنا</div><div className="connected-chat-file"><FileText size={25} /><span>سيرتي المهنية.pdf</span></div>
       <div className="connected-chat-button">افتح المسودة <ArrowUpLeft size={14} /></div>
     </div>

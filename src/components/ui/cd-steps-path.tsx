@@ -36,7 +36,7 @@ function useDark(theme:"system"|"light"|"dark"){
   const change=(event:MediaQueryListEvent)=>setDark(event.matches);media.addEventListener("change",change);return()=>media.removeEventListener("change",change);
  },[theme]);return [dark,setDark] as const;
 }
-export function StepsPath({steps,title="رحلتك في إلمام CV",defaultStep=0,theme="system",accentColor="var(--ui-accent)",autoPlay=false,autoPlayInterval=4800,onChange,className,dir="rtl",onThemeChange}:StepsPathProps){
+export function StepsPath({steps,title="رحلتك في إلمام",defaultStep=0,theme="system",accentColor="var(--ui-accent)",autoPlay=false,autoPlayInterval=4800,onChange,className,dir="rtl",onThemeChange}:StepsPathProps){
  const reduce=!!useReducedMotion(),rtl=dir==="rtl";
  const [dark,setDark]=useDark(theme);
  const n=steps.length,last=Math.max(1,n-1),box=React.useRef<HTMLDivElement>(null);

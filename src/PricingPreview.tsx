@@ -33,7 +33,7 @@ export default function PricingPreview() {
       ref={frame}
       className="pricing-preview-frame"
       src="/pricing-experience/index.html"
-      title="معاينة باقات إلمام CV التفاعلية"
+      title="معاينة باقات إلمام التفاعلية"
     />
   );
 }

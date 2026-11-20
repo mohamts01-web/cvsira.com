@@ -24,7 +24,7 @@ for(const path of paths){
   for(const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)){
     JSON.parse(match[1]);structured++;
   }
-  for(const match of html.matchAll(/href="(\/(?:services|ats-resume|graduate-resume|english-resume|tailor-resume-to-job|job-interview-preparation)[^"#?]*)"/g)){
+  for(const match of html.matchAll(/href="(\/(?:about|services|ats-resume|graduate-resume|english-resume|tailor-resume-to-job|job-interview-preparation)[^"#?]*)"/g)){
     assert.ok(paths.includes(match[1]),"Broken public link: "+match[1]);links++;
   }
   assert.ok(!/<(?:input|textarea)[^>]*(?:email|name="name")/.test(html),"No private form data in public pages");
@@ -32,5 +32,5 @@ for(const path of paths){
 const index=await read("index.html");
 assert.match(index,/<meta name="robots" content="noindex,follow">/);
 assert.equal(paths.filter(path=>path.startsWith("/services/")).length,services.length+1);
-assert.ok(!paths.some(path=>/^\/(documents|editor|tools|assistant|for-job|plans)/.test(path)),"Private/transaction routes excluded");
+assert.ok(!paths.some(path=>/^\/(documents|profile|editor|tools|assistant|for-job|plans)/.test(path)),"Private/transaction routes excluded");
 console.log(JSON.stringify({publicPages:paths.length,uniqueTitles:titles.size,validStructuredData:structured,verifiedPublicLinks:links,privateAppNoindex:true}));

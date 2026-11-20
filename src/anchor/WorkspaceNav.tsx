@@ -11,7 +11,7 @@ export const careerTools=[
 ];
 export const workspaceServices=[...resumeServices,...careerTools];
 export function WorkspaceNav({path}:{path:string}){
- return <aside className="anchor-sidebar"><span className="anchor-eyebrow">مساحتك المهنية</span><nav aria-label="خدمات إلمام CV">
+ return <aside className="anchor-sidebar"><span className="anchor-eyebrow">مساحتك المهنية</span><nav aria-label="خدمات إلمام">
  <a href="/documents" aria-current={path==="/documents"&&!location.hash?"page":undefined}><LayoutDashboard size={19}/>نظرة عامة</a>
  {resumeServices.map(s=><a key={s.path} href={s.path} aria-current={(s.path.split("#")[0]===path&&(s.path.includes("#")?!!location.hash:true))?"page":undefined}><s.icon size={19}/>{s.title}</a>)}
  <span className="anchor-nav-divider"/><a href="/tools" aria-current={path==="/tools"?"page":undefined}><Layers size={19}/>أدوات التوظيف</a>

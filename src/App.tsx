@@ -162,9 +162,9 @@ function TemplatePicker({ selected, disabled = false, onSelect }: {
 }
 function Brand({ onClick }: { onClick: () => void }) {
   return (
-    <button className="brand" aria-label="إلمام CV" onClick={onClick}>
+    <button className="brand" aria-label="إلمام" onClick={onClick}>
       <img className="elmam-brand-image" src="/elmam-brand.svg" alt="" width="210" height="101" />
-      <img className="elmam-brand-dark" src="/assets/logo-dark-bg.svg" alt="" /><span className="brand-en">CV</span>
+      <img className="elmam-brand-dark" src="/assets/logo-dark-bg.svg" alt="" />
     </button>
   );
 }
@@ -213,7 +213,7 @@ export default function App() {
     };
     const title = titles[path] ?? careerTools.find(tool => tool.path === path)?.title ??
       (path.startsWith("/for-job/") ? "تخصيص السيرة للوظيفة" : path.startsWith("/editor/") ? "محرر السيرة" : "مساحتي");
-    document.title = path === "/" ? homeTitle : title + " | إلمام CV";
+    document.title = path === "/" ? homeTitle : title + " | إلمام";
     const descriptions: Record<string,string> = {
       "/": homeDescription,
       "/assistant": "حسّن صياغة سيرتك وترجم محتواها وراجع اقتراحات مساعد إلمام قبل اعتمادها.",
@@ -221,9 +221,9 @@ export default function App() {
       "/tools/interviews": "تدرّب على إجابات المقابلة وراجع ملاحظات عملية على إجاباتك المكتوبة.",
       "/tools/applications": "نظّم الفرص ورسائل التقديم وحالاتها في مساحتك المهنية.",
       "/tools/linkedin": "جهّز محتوى ملف LinkedIn من سيرتك ثم عدّله واحفظه وانسخه إلى حسابك.",
-      "/documents": "سيرك وأدواتك المهنية وتقديماتك في مساحتك الخاصة على إلمام CV.",
+      "/documents": "سيرك وأدواتك المهنية وتقديماتك في مساحتك الخاصة على إلمام.",
     };
-    const description=descriptions[path] ?? "إلمام CV — أدوات السيرة والاستعداد للوظيفة في مساحتك المهنية.";
+    const description=descriptions[path] ?? "إلمام — أدوات السيرة والاستعداد للوظيفة في مساحتك المهنية.";
     const meta=(selector:string, attribute:string, value:string)=>{
       let element=document.head.querySelector<HTMLMetaElement>(selector);
       if(!element){element=document.createElement("meta");document.head.append(element);}
@@ -848,7 +848,7 @@ export default function App() {
           <nav aria-label="التنقل على الجوال" onClick={(event) => {
             if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
           }}>
-            {path === "/" ? <><a href="/services/">خدمات إلمام CV</a>
+            {path === "/" ? <><a href="/services/">خدمات إلمام</a>
             <a href="/tools">أدوات التوظيف</a>
             <a href="/#templates">القوالب والاستوديو</a>
             <a href="/plans">الأسعار</a></> : <a href="/">الرئيسية</a>}
@@ -869,7 +869,7 @@ export default function App() {
           الموقع متاح للمعاينة حاليًا. خدمة البوت متاحة للمشتركين حتى تجهيز
           الدخول بالبريد.{" "}
           <a href="https://t.me/etmam_cv_bot" target="_blank" rel="noreferrer">
-            افتح بوت إلمام CV ←
+            افتح بوت إلمام ←
           </a>
         </div>
       )}
@@ -934,7 +934,7 @@ export default function App() {
             <h2>أكمل سيرتك من تيليجرام</h2>
             <p>اربط حسابك بالبوت لتفتح المسودة نفسها وتستخدم رصيدك من الموقع أو تيليجرام.</p>
             <a className="secondary" href="https://t.me/etmam_cv_bot" target="_blank" rel="noreferrer">
-              <MessageCircle size={18} /> افتح بوت إلمام CV
+              <MessageCircle size={18} /> افتح بوت إلمام
             </a>
           </section>
           <p className="plan-code">
@@ -1974,7 +1974,7 @@ export default function App() {
         </Modal>
       )}
       {modal === "login" && (
-        <Modal title="أهلًا بك في إلمام CV" className="liquid-login-modal" onClose={() => setModal("")}>
+        <Modal title="أهلًا بك في إلمام" className="liquid-login-modal" onClose={() => setModal("")}>
           <NeuralAccessLogin>
           <p className="muted">ندخل معك برمز يُرسل إلى بريدك، دون كلمة مرور.</p>
           {(!auth || !emailLoginReady) && (
@@ -2063,7 +2063,7 @@ export default function App() {
           )}
           {!paid && (
             <button className="primary full" type="button" onClick={openPlansFromEditor}>
-              عرض باقة إلمام CV <ArrowLeft size={16} />
+              عرض باقة إلمام <ArrowLeft size={16} />
             </button>
           )}
           <form

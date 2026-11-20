@@ -14,6 +14,6 @@ export function HowItWorks(){
  useEffect(()=>{if(location.hash==="#how-it-works")document.getElementById("how-it-works")?.scrollIntoView({block:"start"})},[]);
  return <section className="anchor-section how-explainer" id="how-it-works" aria-labelledby="how-title">
   <div className="how-explainer-copy"><span className="anchor-eyebrow">كل خطوة تقرّبك</span><h2 id="how-title">من أول معلومة،<br/><em>إلى استعداد أوضح.</em></h2><p>ابدأ بالسيرة، راجع اقتراحات المساعد وخصّصها للفرصة. بعدها جهّز رسالتك وتدرّب للمقابلة من مساحتك المهنية.</p><a className="secondary" href="/start">ابدأ سيرتك<ArrowLeft size={18} aria-hidden="true"/></a></div>
-  <StepsPath steps={STEPS} title="رحلتك في إلمام CV" theme={theme} onThemeChange={toggle} accentColor="var(--ui-accent)" dir="rtl" autoPlay autoPlayInterval={4800}/>
+  <StepsPath steps={STEPS} title="رحلتك في إلمام" theme={theme} onThemeChange={toggle} accentColor="var(--ui-accent)" dir="rtl" autoPlay autoPlayInterval={4800}/>
  </section>;
 }

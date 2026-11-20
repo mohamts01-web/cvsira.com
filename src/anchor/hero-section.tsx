@@ -210,7 +210,7 @@ export function HeroSection({onStart,onTry}:{onStart:()=>void;onTry:()=>void}) {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12 lg:gap-20">
           {/* Left column - text content */}
           <div className="lg:max-w-xl lg:min-h-[760px] flex flex-col justify-center pt-24 lg:pt-20">
-            <div className="mb-8 w-fit"><AnimatedBadge text="إلمام CV · مساحتك المهنية" /></div>
+            <div className="mb-8 w-fit"><AnimatedBadge text="إلمام · مساحتك المهنية" /></div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-baltic-sea-50)] leading-[1.35]">
               <WordPullUpText text="مسارك يستحق"/>

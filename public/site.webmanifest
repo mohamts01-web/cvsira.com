@@ -1,7 +1,7 @@
 {
-  "name": "إلمام | Elmam",
+  "name": "إلمام — مساحتك المهنية",
   "short_name": "إلمام",
-  "description": "وظيفتك تبدأ بوضوح",
+  "description": "فرصتك الجاية، خلّك جاهز لها.",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "/",
@@ -9,8 +9,23 @@
   "background_color": "#F6F9FC",
   "theme_color": "#0B1F4B",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

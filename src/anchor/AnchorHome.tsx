@@ -11,7 +11,7 @@ import { workspaceServices } from "./WorkspaceNav";
 import { HowItWorks } from "./how-it-works";
 import { FAQ } from "./faq";
 import { PolicyLinks } from "../LegalPage";
-import { services } from "../../shared/services.mjs";
+import { services, aboutElmam } from "../../shared/services.mjs";
 import HomeMarquees from "./HomeMarquees";
 const templates = [
   { id: "classic", name: "الأساسي", desc: "ترتيب واضح يضع خبرتك أولًا." },
@@ -119,7 +119,7 @@ export default function AnchorHome({
               >
                 <div className="anchor-demo-paper-heading">
                   <span>
-                    إلمام <small>CV</small>
+                    إلمام <small>سيرة ذاتية</small>
                   </span>
                   <small>نموذج توضيحي</small>
                 </div>
@@ -259,6 +259,7 @@ export default function AnchorHome({
         </button>
       </section>
       <section className="anchor-section" aria-labelledby="career-guides-title"><div className="anchor-section-heading"><div><span className="ds-eyebrow">تعلّم وطبّق</span><h2 id="career-guides-title">أدلة تساعد خطوتك القادمة.</h2></div><p>نصائح عملية للسوق السعودي، ثم أدوات تساعدك تطبقها.</p></div><nav className="service-guide-links" aria-label="أدلة إلمام">{[["/ats-resume/","ترتيب السيرة لأنظمة ATS"],["/graduate-resume/","سيرة حديث التخرج"],["/english-resume/","السيرة باللغة الإنجليزية"],["/tailor-resume-to-job/","تخصيص السيرة لوظيفة"],["/job-interview-preparation/","التحضير لمقابلة العمل"]].map(([href,label])=><a href={href} key={href}>{label}<ArrowLeft size={16}/></a>)}</nav></section>
+      <section className="anchor-section anchor-facts" aria-labelledby="about-elmam-title"><div><span className="anchor-eyebrow">من حنا؟</span><h2 id="about-elmam-title">إلمام.<br/><em>مساحتك المهنية.</em></h2></div><div><p>{aboutElmam}</p><a className="secondary" href="/about/">تعرّف على إلمام<ArrowLeft size={17}/></a></div></section>
       <FAQ />
       <section className="anchor-final">
         <div className="anchor-final-grid" aria-hidden="true">
@@ -284,10 +285,11 @@ export default function AnchorHome({
         <a href="/" className="anchor-wordmark">
           <img className="brand-footer-light" src="/elmam-brand.svg" alt="إلمام Elmam"/><img className="brand-footer-dark" src="/assets/logo-dark-bg.svg" alt="إلمام Elmam"/>
         </a>
-        <p>مساحتك المهنية. من السيرة إلى الفرصة.</p>
-        <nav className="service-guide-links" aria-label="خدمات إلمام CV">{services.map(service=><a key={service.slug} href={"/services/"+service.slug+"/"}>{service.title}</a>)}</nav>
+        <p>فرصتك الجاية، خلّك جاهز لها.</p>
+        <a href="/about/">عن إلمام</a>
+        <nav className="service-guide-links" aria-label="خدمات إلمام">{services.map(service=><a key={service.slug} href={"/services/"+service.slug+"/"}>{service.title}</a>)}</nav>
         <PolicyLinks />
-        <span>© {new Date().getFullYear()} إلمام CV</span>
+        <span>© {new Date().getFullYear()} إلمام</span>
       </footer>
     </main>
   );
