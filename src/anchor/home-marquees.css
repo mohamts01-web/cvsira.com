@@ -4,8 +4,9 @@
 .home-marquees .marquee-group{display:flex;align-items:center;flex:none;gap:40px;padding-inline-end:40px;min-width:100vw;box-sizing:border-box}
 .employer-marquee{padding-block:18px;background:var(--ui-surface);mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent)}
 .logo-track{animation:elmam-logo-marquee 88s linear infinite}
-.employer-logo{width:132px;height:66px;display:flex;align-items:center;justify-content:center;flex:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:8px 12px;box-sizing:border-box}
-.employer-logo img{display:block;width:104px;height:46px;object-fit:contain;max-width:100%}
+.employer-logo{width:160px;height:72px;display:flex;align-items:center;justify-content:center;flex:none;background:transparent;border:0;border-radius:0;padding:0;box-sizing:border-box}
+.employer-logo img{display:block;width:144px;height:64px;object-fit:contain;max-width:100%}
+:root[data-theme=dark] .employer-logo img{filter:grayscale(1) invert(1)}
 .benefit-marquee{background:var(--brand-navy-fixed);color:white;padding-block:18px}
 :root[data-theme=dark] .benefit-marquee{background:var(--ui-surface-2)}
 .benefit-track{animation:elmam-benefit-marquee 36s linear infinite}
@@ -14,5 +15,5 @@
 .marquee-benefit svg{color:var(--brand-teal-fixed);flex-shrink:0}
 @keyframes elmam-logo-marquee{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
 @keyframes elmam-benefit-marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-@media(max-width:650px){.home-marquees .marquee-group{gap:24px;padding-inline-end:24px}.employer-marquee{padding-block:14px}.employer-logo{width:116px;height:60px}.employer-logo img{width:90px;height:42px}.marquee-benefit{font-size:.875rem;gap:12px}.benefit-marquee{padding-block:14px}.logo-track{animation-duration:100s}.benefit-track{animation-duration:42s}}
+@media(max-width:650px){.home-marquees .marquee-group{gap:24px;padding-inline-end:24px}.employer-marquee{padding-block:14px}.employer-logo{width:140px;height:66px}.employer-logo img{width:128px;height:58px}.marquee-benefit{font-size:.875rem;gap:12px}.benefit-marquee{padding-block:14px}.logo-track{animation-duration:100s}.benefit-track{animation-duration:42s}}
 @media(prefers-reduced-motion:reduce){.home-marquees .marquee-track{animation:none;transform:none;width:100%;will-change:auto}.home-marquees .marquee-group{width:100%;min-width:0;justify-content:center;flex-wrap:wrap;padding-inline:16px;box-sizing:border-box}.home-marquees .marquee-group[aria-hidden=true]{display:none}.employer-marquee{mask-image:none}}
