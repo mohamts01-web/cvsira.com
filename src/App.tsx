@@ -1,5 +1,6 @@
 import PreviewNotice from "./anchor/PreviewNotice";
 import CreditDesignPreview from "./CreditDesignPreview";
+import PersonalProfile from "./PersonalProfile";
 import { homeDescription, homeTitle } from "../shared/services.mjs";
 import { assistantSections, type AssistantAction, type AssistantSection } from "./assistant-actions";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -206,7 +207,7 @@ export default function App() {
     const titles: Record<string, string> = {
       "/": "سيرتك واستعدادك للوظيفة في مكان واحد",
       "/documents": location.hash === "#resume-drafts" ? "مكتبة السير" : "مساحتي المهنية",
-      "/plans": "الباقة والرصيد", "/assistant": "مساعد إلمام", "/tools": "أدوات التوظيف",
+      "/plans": "الباقة والرصيد", "/assistant": "مساعد إلمام", "/tools": "أدوات التوظيف", "/profile": "ملفي الشخصي",
       "/start": "إنشاء سيرة جديدة", "/try": "محرر السيرة", "/privacy": "الخصوصية",
       "/terms": "شروط الاستخدام", "/contact": "تواصل معنا", "/refunds": "الإلغاء والاسترداد",
     };
@@ -805,13 +806,12 @@ export default function App() {
     <header className="site-header">
       <div className="container nav">
         <Brand onClick={() => go("/")} />
-        <nav aria-label="التنقل الرئيسي">
+        {path === "/" && <nav aria-label="التنقل الرئيسي">
           <a href="/services/">الخدمات</a>
-          <a href="/tools" aria-current={path.startsWith("/tools") ? "page" : undefined}>أدوات التوظيف</a>
+          <a href="/tools">أدوات التوظيف</a>
           <a href="/#templates">القوالب</a>
           <a
             href="/plans"
-            aria-current={path === "/plans" ? "page" : undefined}
             onClick={(e) => {
               e.preventDefault();
               go("/plans");
@@ -819,7 +819,7 @@ export default function App() {
           >
             الأسعار
           </a>
-        </nav>
+        </nav>}
         <div className="nav-actions"><ThemeToggle/>
           {session ? (
             <>
@@ -828,8 +828,8 @@ export default function App() {
               </button>
               <button
                 className="icon-btn"
-                aria-label="حسابي"
-                onClick={() => setModal("membership")}
+                aria-label="الملف الشخصي"
+                onClick={() => go("/profile")}
               >
                 <UserRound size={20} />
               </button>
@@ -839,21 +839,22 @@ export default function App() {
               تسجيل الدخول
             </button>
           )}
-          <button className="primary small" onClick={() => start()}>
+          {path === "/" && <button className="primary small" onClick={() => start()}>
             أنشئ سيرتك <ArrowLeft size={16} />
-          </button>
+          </button>}
         </div>
         <details className="mobile-navigation">
           <summary aria-label="قائمة التنقل"><Menu size={22} aria-hidden="true" /></summary>
           <nav aria-label="التنقل على الجوال" onClick={(event) => {
             if ((event.target as HTMLElement).closest("a")) event.currentTarget.closest("details")?.removeAttribute("open");
           }}>
-            <a href="/services/">خدمات إلمام CV</a>
+            {path === "/" ? <><a href="/services/">خدمات إلمام CV</a>
             <a href="/tools">أدوات التوظيف</a>
             <a href="/#templates">القوالب والاستوديو</a>
-            <a href="/plans">الأسعار</a>
+            <a href="/plans">الأسعار</a></> : <a href="/">الرئيسية</a>}
             <a href="/start">أنشئ سيرتك</a>
             {session && <a href="/documents">مساحتي</a>}
+            {session && <a href="/profile">الملف الشخصي</a>}
           </nav>
         </details>
       </div>
@@ -862,7 +863,7 @@ export default function App() {
   return (
     <>
       {!editing && header}
-      {!editing && !wizard && (path === "/documents" || path.startsWith("/tools") || path === "/assistant" || path === "/plans") && <WorkspaceNav path={path} />}
+      {!editing && !wizard && (path === "/documents" || path.startsWith("/tools") || path === "/assistant" || path === "/plans" || path === "/profile") && <WorkspaceNav path={path} />}
       {!emailLoginReady && !session && !editing && (
         <div className="preview-notice">
           الموقع متاح للمعاينة حاليًا. خدمة البوت متاحة للمشتركين حتى تجهيز
@@ -914,6 +915,7 @@ export default function App() {
         </main>
       )}
       {path === "/" && <Home onStart={() => start()} onTry={(template) => { start(true); if (template) setDesign({ ...defaultDesign(), template }); }} onPlans={() => go("/plans")} />}
+      {path === "/profile" && (session ? <PersonalProfile key={session.user.id} user={session.user} drafts={drafts} onOpen={id=>go("/editor/"+id)} onAccount={()=>setModal("membership")}/> : <main className="container personal-profile-page"><h1>ملفي الشخصي</h1><p>سجّل الدخول لعرض بياناتك وسيرك المحفوظة.</p><button className="primary" onClick={()=>setModal("login")}>تسجيل الدخول</button></main>)}
 
       {path === "/plans" && (
         <main className="container plans-page">

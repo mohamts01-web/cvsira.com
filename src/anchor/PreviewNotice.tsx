@@ -1,7 +1,7 @@
 import {useEffect,useState} from "react";
 import {Info,X} from "lucide-react";
 
-export default function PreviewNotice(){
+export default function PreviewNotice({message="تُحفظ المسودات التجريبية في هذا المتصفح."}:{message?:string}={}){
  const [visible,setVisible]=useState(()=>{
   try{return sessionStorage.getItem("elmam-preview-dismissed")!=="1"}catch{return true}
  });
@@ -15,5 +15,5 @@ export default function PreviewNotice(){
   return ()=>window.clearTimeout(timer);
  },[visible]);
  if(!visible)return null;
- return <aside className="preview-toast" role="status"><Info size={19} aria-hidden="true"/><div><strong>أنت في نسخة المعاينة</strong><p>تُحفظ المسودات التجريبية في هذا المتصفح.</p></div><button className="icon-btn" onClick={dismiss} aria-label="إغلاق إشعار المعاينة"><X size={17}/></button></aside>;
+ return <aside className="preview-toast" role="status"><Info size={19} aria-hidden="true"/><div><strong>أنت في نسخة المعاينة</strong><p>{message}</p></div><button className="icon-btn" onClick={dismiss} aria-label="إغلاق إشعار المعاينة"><X size={17}/></button></aside>;
 }

@@ -22,7 +22,7 @@ export function applyTheme(theme: Theme) {
   document.documentElement.style.colorScheme = theme;
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute("content", theme === "dark" ? "#0B1F4B" : "#F6F9FC");
+    ?.setAttribute("content", theme === "dark" ? "#000000" : "#F6F9FC");
 }
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() =>

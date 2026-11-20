@@ -10,9 +10,9 @@ function boot(saved,storageFails=false){
  vm.runInNewContext(init,{document:{documentElement:root,querySelector:()=>meta,querySelectorAll:()=>[button],addEventListener:(n,fn)=>listeners[n]=fn},localStorage:{getItem:k=>{if(storageFails)throw Error("denied");return values.get(k)},setItem:(k,v)=>{if(storageFails)throw Error("denied");values.set(k,v)}},addEventListener:(n,fn)=>listeners[n]=fn});
  return {root,classes,meta,button,values,listeners};
 }
-test("brand theme boots light and respects a persisted navy dark theme",()=>{
+test("brand theme boots light and respects a persisted black dark theme",()=>{
  const light=boot();assert.equal(light.root.dataset.theme,"light");assert.equal(light.meta.content,"#F6F9FC");assert.ok(!light.classes.has("dark"));
- const dark=boot("dark");assert.equal(dark.root.dataset.theme,"dark");assert.ok(dark.classes.has("dark"));assert.equal(dark.meta.content,"#0B1F4B");
+ const dark=boot("dark");assert.equal(dark.root.dataset.theme,"dark");assert.ok(dark.classes.has("dark"));assert.equal(dark.meta.content,"#000000");
 });
 test("guide-page switching persists across reload, and storage denial does not prevent switching",()=>{
  for(const denied of [false,true]){const first=boot(undefined,denied);first.listeners.click({target:{closest:()=>true}});assert.equal(first.root.dataset.theme,"dark");assert.equal(first.button["aria-label"],"تفعيل الوضع الفاتح");if(!denied)assert.equal(boot(first.values.get("elmam.theme")).root.dataset.theme,"dark")}

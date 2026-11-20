@@ -1,6 +1,6 @@
 .public-services{background:var(--ui-page);color:var(--ui-text);min-height:100vh}
 .public-services main{max-width:72rem;background:var(--ui-surface);color:var(--ui-text);border-color:var(--ui-border)}
-.public-services header{max-width:76rem;border-color:var(--ui-border);align-items:center;margin-bottom:24px}
+.public-services header{max-width:none;width:100%;box-sizing:border-box;border-color:var(--ui-border);align-items:center;margin-bottom:24px}
 .public-services header img{background:transparent;padding:0}
 .public-services header nav{gap:20px;align-items:center}
 .public-services header a,.public-services h1,.public-services h2,.public-services h3{color:var(--ui-text)}

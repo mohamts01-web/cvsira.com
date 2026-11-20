@@ -1,4 +1,4 @@
-import {LayoutDashboard,FileText,Sparkles,BriefcaseBusiness,MessagesSquare,Send,Linkedin,CreditCard,ArrowUpLeft,Layers,ChevronLeft} from "lucide-react";
+import {LayoutDashboard,FileText,Sparkles,BriefcaseBusiness,MessagesSquare,Send,Linkedin,CreditCard,ArrowUpLeft,Layers,ChevronLeft,UserRound} from "lucide-react";
 const resumeServices=[
  {path:"/documents#resume-drafts",title:"سيرتي الذاتية",description:"ابنِ سيرتك بالعربية أو الإنجليزية واحتفظ بنسخك المرتبطة بالفرص.",icon:FileText,label:"محرر السيرة"},
  {path:"/assistant",title:"مساعد إلمام",description:"حسّن صياغتك وترجم سيرتك، وراجع الاقتراحات قبل اعتمادها.",icon:Sparkles,label:"الذكاء الاصطناعي"},
@@ -16,7 +16,7 @@ export function WorkspaceNav({path}:{path:string}){
  {resumeServices.map(s=><a key={s.path} href={s.path} aria-current={(s.path.split("#")[0]===path&&(s.path.includes("#")?!!location.hash:true))?"page":undefined}><s.icon size={19}/>{s.title}</a>)}
  <span className="anchor-nav-divider"/><a href="/tools" aria-current={path==="/tools"?"page":undefined}><Layers size={19}/>أدوات التوظيف</a>
  {careerTools.map(s=><a key={s.path} href={s.path} className="tool-subroute" aria-current={s.path===path?"page":undefined}><s.icon size={18}/>{s.title}</a>)}
- <span className="anchor-nav-divider"/><a href="/plans" aria-current={path==="/plans"?"page":undefined}><CreditCard size={19}/>الباقة والرصيد</a></nav>
+ <span className="anchor-nav-divider"/><a href="/profile" aria-current={path==="/profile"?"page":undefined}><UserRound size={19}/>الملف الشخصي</a><a href="/plans" aria-current={path==="/plans"?"page":undefined}><CreditCard size={19}/>الباقة والرصيد</a></nav>
  <div className="anchor-sidebar-note"><span className="anchor-status-dot"/><a href="https://jobs.cvsira.com/" target="_blank" rel="noreferrer">إلمام وظائف<ArrowUpLeft size={16}/></a></div></aside>
 }
 export function WorkspaceHeading({path}:{path:string}) {
